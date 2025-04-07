@@ -84,54 +84,55 @@ ftable(tabela_sintomas)
 
 # análise da pontuação do MMSE (mini exame de estado mental), onde pontuações mais baixas indicam comprometimento cognitivo (diminuição das funçõescognitivas como memória, atenção, raciocínio etc)
 # cálculo média, moda, mediana
-media_mmse_geral <- mean(dados$MMSE)
-cat(media_mmse_geral)
 
-mediana_mmse_geral <- median(dados$MMSE)
-cat(mediana_mmse_geral)
+# arredondando os valores e criando uma nova variavel
+dados$mmse_arred <- round(dados$MMSE)
 
-moda_mmse_geral <- as.numeric(names(sort(table(dados$MMSE), decreasing = TRUE)[1]))
-cat(moda_mmse_geral)
+media_mmse_arred <- mean(dados$mmse_arred)
+cat(media_mmse_arred)
 
-boxplot(dados$MMSE,
+mediana_mmse_arred <- median(dados$mmse_arred)
+cat(mediana_mmse_arred)
+
+moda_mmse_arred <- as.numeric(names(sort(table(dados$mmse_arred), decreasing = TRUE)[1]))
+cat(moda_mmse_arred)
+
+boxplot(dados$mmse_arred,
                  main = "Boxplot do MMSE",
                  ylab = "Pontuação",
                  col = "lightgreen")
 # o boxplot mostra uma grande variabilidade nas pontuações
 # boxplot comparando pontuações de pacientes com e sem alzheimer
-boxplot(MMSE ~ alzheimer, data = dados,
+boxplot(mmse_arred ~ Diagnosis, data = dados,
                  main = "Pontuação no MMSE",
-                 xlab = "Alzheimer (0 = Nao, 1 = Sim)",
+                 xlab = "Alzheimer",
                  ylab = "Pontuação",
                  col = c("lightcoral", "lightgreen"),
-                 names = c("Sem alzheimer", "Com alzheimer"))
+                 names = c("Não", "Sim"))
 # Podemos ver que pacientes com alzheimer possuem pontuações mais baixas e pacientes sem alzheimer apresentam maior variação 
 
 
 # cálculo medidas de dispersão
-amplitude_mmse_geral <- max(dados$MMSE)- min(dados$MMSE)
-cat(amplitude_mmse_geral)
-#29.98607
+amplitude_mmse_arred <- max(dados$mmse_arred)- min(dados$mmse_arred)
+cat(amplitude_mmse_arred)
 
-desvio_padrao_mmse_geral <- sd(dados$MMSE)
-variancia_mmse_geral <- var(dados$MMSE)
-cat(variancia_mmse_geral)
-#74.18638
-cat(desvio_padrao_mmse_geral)
-#8.613151
+desvio_padrao_mmse_arred <- sd(dados$mmse_arred)
+variancia_mmse_arred <- var(dados$mmse_arred)
+cat(variancia_mmse_arred)
+cat(desvio_padrao_mmse_arred)
 
-coef_var_mmse_geral <- (desvio_padrao_mmse_geral / media_mmse_geral)*100
-cat("CV =", round(coef_var_mmse_geral, 2),"%")
-#CV = 58.37 %
+coef_var_mmse_arred <- (desvio_padrao_mmse_arred / media_mmse_arred)*100
+cat("CV =", round(coef_var_mmse_arred, 2),"%")
+
 
 #Criando um vetor de valores para o eixox
- x_values<-seq(min(dados$MMSE),max(dados$MMSE),length=2149)
+ x_values<-seq(min(dados$mmse_arred),max(dados$mmse_arred),length=2149)
  #Calculando a densidade da distribuição normal com média e desvio padrão dos dados
-   normal_curve <-dnorm(x_values,mean= media_mmse_geral,sd= desvio_padrao_mmse_geral)
+   normal_curve <-dnorm(x_values,mean= media_mmse_arred,sd= desvio_padrao_mmse_arred)
  #Ajustando o limite superior do eixo y com base no pico da curva normal
    max_density <-max(normal_curve) * 1.2 #Adicionando uma margem de20%
  #Criando um histograma das pontuações
-   hist(dados$MMSE,
+   hist(dados$mmse_arred,
                main= "Histograma da pontuação no MMSE",
                xlab= "Pontuação",
                ylab= "Frequência",
@@ -140,9 +141,9 @@ cat("CV =", round(coef_var_mmse_geral, 2),"%")
                probability= TRUE,
                ylim= c(0,max_density))
  #Adicionando linhas de referência para média,mediana e moda
- abline(v= media_mmse_geral,col= "red",lwd= 2, lty= 2) #Média
- abline(v= mediana_mmse_geral, col= "green", lwd= 2,lty= 2) #Mediana
- abline(v= moda_mmse_geral, col="blue",lwd= 2, lty= 2) #Moda
+ abline(v= media_mmse_arred,col= "red",lwd= 2, lty= 2) #Média
+ abline(v= mediana_mmse_arred, col= "green", lwd= 2,lty= 2) #Mediana
+ abline(v= moda_mmse_arred, col="blue",lwd= 2, lty= 2) #Moda
  #Adicionando a curva normal
    lines(x_values,normal_curve, col= "darkred", lwd=2, lty= 1)
  #Adicionando legenda
@@ -156,21 +157,21 @@ cat("CV =", round(coef_var_mmse_geral, 2),"%")
 # removendo pacientes sem diagnóstico para alzheimer
 df_filtrado <- subset(dados, Diagnosis != 0)
 # cálculo média
-media_mmse <- mean(df_filtrado$MMSE)
+media_mmse <- mean(df_filtrado$mmse_arred)
 cat("a média do teste para pacientes com alzheimer é", media_mmse)
 
-mediana_mmse <- median(df_filtrado$MMSE)
+mediana_mmse <- median(df_filtrado$mmse_arred)
 cat(mediana_mmse)
 
-moda_mmse <- as.numeric(names(sort(table(df_filtrado$MMSE), decreasing = TRUE)[1]))
+moda_mmse <- as.numeric(names(sort(table(df_filtrado$mmse_arred), decreasing = TRUE)[1]))
 cat(moda_mmse)
 
 # cálculo medidas de dispersão
-amplitude_mmse <- max(df_filtrado$MMSE)- min(df_filtrado$MMSE)
+amplitude_mmse <- max(df_filtrado$mmse_arred)- min(df_filtrado$mmse_arred)
 cat(amplitude_mmse)
 
-desvio_padrao_mmse <- sd(df_filtrado$MMSE)
-variancia_mmse <- var(df_filtrado$MMSE)
+desvio_padrao_mmse <- sd(df_filtrado$mmse_arred)
+variancia_mmse <- var(df_filtrado$mmse_arred)
 cat(variancia_mmse)
 cat(desvio_padrao_mmse)
 
@@ -180,7 +181,7 @@ cat("CV =", round(coef_var_mmse, 2),"%")
 
 
 #Criando um vetor de valores para o eixox
-x_values3<-seq(min(df_filtrado$MMSE),max(df_filtrado$MMSE),length=760)
+x_values3<-seq(min(df_filtrado$mmse_arred),max(df_filtrado$mmse_arred),length=760)
 #Calculando a densidade da distribuição normal com média e desvio padrão dos dados
 normal_curve3 <-dnorm(x_values3,mean= media_mmse,sd= desvio_padrao_mmse)
 #Ajustando o limite superior do eixo y com base no pico da curva normal
@@ -210,38 +211,41 @@ legend("topright",
 
 
 # calculo medidas para ADL (Escore de Atividades de Vida Diária, variando de 0 a 10. Pontuações mais baixas indicam maior comprometimento)
-media_adl_geral <- mean(dados$ADL)
-cat(media_adl_geral)
+# arredondando os valores e criando uma nova variavel
+adl_arred <- round(dados$ADL)
 
-mediana_adl_geral <- median(dados$ADL)
-cat(mediana_adl_geral)
+media_adl_arred <- mean(dados$adl_arred)
+cat(media_adl_arred)
 
-moda_adl_geral <- as.numeric(names(sort(table(dados$ADL), decreasing = TRUE)[1]))
-cat(moda_adl_geral)
+mediana_adl_arred <- median(dados$adl_arred)
+cat(mediana_adl_arred)
 
-boxplot(dados$ADL,
+moda_adl_arred <- as.numeric(names(sort(table(dados$adl_arred), decreasing = TRUE)[1]))
+cat(moda_adl_arred)
+
+boxplot(dados$adl_arred,
                  main = "Boxplot do ADL",
                  ylab = "Pontuação",
                  col = "lightgreen")
 
-amplitude_adl_geral <- max(dados$ADL)- min(dados$ADL)
-cat(amplitude_adl_geral)
+amplitude_adl_arred <- max(dados$adl_arred)- min(dados$adl_arred)
+cat(amplitude_adl_arred)
 
-desvio_padrao_adl_geral <- sd(dados$ADL)
-variancia_adl_geral <- var(dados$ADL)
-cat(variancia_adl_geral)
-cat(desvio_padrao_adl_geral)
-coef_var_adl_geral <- (desvio_padrao_adl_geral / media_adl_geral)*100
-cat("CV =", round(coef_var_adl_geral, 2),"%")
+desvio_padrao_adl_arred <- sd(dados$adl_arred)
+variancia_adl_arred <- var(dados$adl_arred)
+cat(variancia_adl_arred)
+cat(desvio_padrao_adl_arred)
+coef_var_adl_arred <- (desvio_padrao_adl_arred / media_adl_arred)*100
+cat("CV =", round(coef_var_adl_arred, 2),"%")
 
 #Criando um vetor de valores para o eixox
-x_values2<-seq(min(dados$ADL),max(dados$ADL),length=2149)
+x_values2<-seq(min(dados$adl_arred),max(dados$adl_arred),length=2149)
 #Calculando a densidade da distribuição normal com média e desvio padrão dos dados
-normal_curve2 <-dnorm(x_values2,mean= media_adl_geral,sd= desvio_padrao_adl_geral)
+normal_curve2 <-dnorm(x_values2,mean= media_adl_arred,sd= desvio_padrao_adl_arred)
 #Ajustando o limite superior do eixo y com base no pico da curva normal
 max_density2 <-max(normal_curve2) * 1.2 #Adicionando uma margem de20%
 #Criando um histograma das pontuações
-hist(dados$ADL,
+hist(dados$adl_arred,
      main= "Histograma da pontuação ADL",
      xlab= "Pontuação",
      ylab= "Frequência",
@@ -250,9 +254,9 @@ hist(dados$ADL,
      probability= TRUE,
      ylim= c(0,max_density2))
 #Adicionando linhas de referência para média,mediana e moda
-abline(v= media_adl_geral,col= "red",lwd= 2, lty= 2) #Média
-abline(v= mediana_adl_geral, col= "green", lwd= 2,lty= 2) #Mediana
-abline(v= moda_adl_geral, col="blue",lwd= 2, lty= 2) #Moda
+abline(v= media_adl_arred,col= "red",lwd= 2, lty= 2) #Média
+abline(v= mediana_adl_arred, col= "green", lwd= 2,lty= 2) #Mediana
+abline(v= moda_adl_arred, col="blue",lwd= 2, lty= 2) #Moda
 #Adicionando a curva normal
 lines(x_values2,normal_curve2, col= "darkred", lwd=2, lty= 1)
 #Adicionando legenda
@@ -264,9 +268,9 @@ legend("topright",
        bty= "n")
 
 # boxplot comparando pontuações de pacientes com e sem alzheimer
-boxplot(ADL ~ alzheimer, data = dados,
+boxplot(adl_arred ~ Diagnosis, data = dados,
         main = "Pontuação no ADL",
-        xlab = "Alzheimer (0 = Nao, 1 = Sim)",
+        xlab = "Alzheimer",
         ylab = "Pontuação",
         col = c("lightcoral", "lightgreen"),
-        names = c("Sem alzheimer", "Com alzheimer"))
+        names = c("Não", "Sim"))
