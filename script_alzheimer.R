@@ -82,7 +82,7 @@ ftable(tabela_sintomas)
 # os sintomas mais frequentes foram esquecimento e reclamações de memória (425 ou 55.92% pacientes apresentaram pelo menos um desses sintomas), enquanto confusão, desorientação, mudanças de personalidade e dificuldade em concluir tarefas foram sintomas que aparecem bastante em conjunto com os dois sintomas principais
 # 173 (22.76%) pacientes apresentaram os sintomas confusão, desorientação, mudanças de personalidade e dificuldade em concluir tarefas (apresentando um ou mais desses sintomas mas sem esquecimento e reclamações de memória)
 
-# análise da pontuação do MMSE (mini exame de estado mental), onde pontuações mais baixas indicam comprometimento cognitivo (diminuição das funçõescognitivas como memória, atenção, raciocínio etc)
+# análise da pontuação do MMSE (mini exame de estado mental pontuações variam de 0 a 30), onde pontuações mais baixas indicam comprometimento cognitivo (diminuição das funçõescognitivas como memória, atenção, raciocínio etc)
 # cálculo média, moda, mediana
 
 # arredondando os valores e criando uma nova variavel
@@ -90,13 +90,15 @@ dados$mmse_arred <- round(dados$MMSE)
 
 media_mmse_arred <- mean(dados$mmse_arred)
 cat(media_mmse_arred)
+# 14.76
 
 mediana_mmse_arred <- median(dados$mmse_arred)
 cat(mediana_mmse_arred)
-
+# 14
 moda_mmse_arred <- as.numeric(names(sort(table(dados$mmse_arred), decreasing = TRUE)[1]))
 cat(moda_mmse_arred)
-
+# 6
+# média e mediana são próximas e moda indica um valor mais baixo
 boxplot(dados$mmse_arred,
                  main = "Boxplot do MMSE",
                  ylab = "Pontuação",
@@ -110,19 +112,20 @@ boxplot(mmse_arred ~ Diagnosis, data = dados,
                  col = c("lightcoral", "lightgreen"),
                  names = c("Não", "Sim"))
 # Podemos ver que pacientes com alzheimer possuem pontuações mais baixas e pacientes sem alzheimer apresentam maior variação 
-
+# 
 
 # cálculo medidas de dispersão
 amplitude_mmse_arred <- max(dados$mmse_arred)- min(dados$mmse_arred)
 cat(amplitude_mmse_arred)
+# 30
 
 desvio_padrao_mmse_arred <- sd(dados$mmse_arred)
 variancia_mmse_arred <- var(dados$mmse_arred)
-cat(variancia_mmse_arred)
-cat(desvio_padrao_mmse_arred)
+cat(variancia_mmse_arred) # 74.22
+cat(desvio_padrao_mmse_arred) # 8.61 pontuações do teste variam 8.61 pontos para mais ou para menos da média
 
 coef_var_mmse_arred <- (desvio_padrao_mmse_arred / media_mmse_arred)*100
-cat("CV =", round(coef_var_mmse_arred, 2),"%")
+cat("CV =", round(coef_var_mmse_arred, 2),"%") # 58.37%, alta variabilidade 
 
 
 #Criando um vetor de valores para o eixox
@@ -153,31 +156,35 @@ cat("CV =", round(coef_var_mmse_arred, 2),"%")
                    lty= c(1, 2, 2, 2),
                    lwd= 2,
                    bty= "n")
+# histograma não segue a curva normal
 
 # removendo pacientes sem diagnóstico para alzheimer
 df_filtrado <- subset(dados, Diagnosis != 0)
 # cálculo média
 media_mmse <- mean(df_filtrado$mmse_arred)
 cat("a média do teste para pacientes com alzheimer é", media_mmse)
+# 12
 
 mediana_mmse <- median(df_filtrado$mmse_arred)
 cat(mediana_mmse)
+# 11.5
 
 moda_mmse <- as.numeric(names(sort(table(df_filtrado$mmse_arred), decreasing = TRUE)[1]))
 cat(moda_mmse)
+# 8
 
 # cálculo medidas de dispersão
 amplitude_mmse <- max(df_filtrado$mmse_arred)- min(df_filtrado$mmse_arred)
-cat(amplitude_mmse)
+cat(amplitude_mmse) # 30
 
 desvio_padrao_mmse <- sd(df_filtrado$mmse_arred)
 variancia_mmse <- var(df_filtrado$mmse_arred)
-cat(variancia_mmse)
-cat(desvio_padrao_mmse)
+cat(variancia_mmse) # 52.23
+cat(desvio_padrao_mmse) # 7.23
 
 
 coef_var_mmse <- (desvio_padrao_mmse / media_mmse)*100
-cat("CV =", round(coef_var_mmse, 2),"%")
+cat("CV =", round(coef_var_mmse, 2),"%") #60.21%
 
 
 #Criando um vetor de valores para o eixox
