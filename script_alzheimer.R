@@ -111,8 +111,9 @@ boxplot(mmse_arred ~ Diagnosis, data = dados,
                  ylab = "Pontuação",
                  col = c("lightcoral", "lightgreen"),
                  names = c("Não", "Sim"))
-# Podemos ver que pacientes com alzheimer possuem pontuações mais baixas e pacientes sem alzheimer apresentam maior variação 
-# 
+# Podemos ver que pacientes com alzheimer possuem pontuações mais baixas  
+# Pacientes com alzheimer possuem dados assimétricos positivos, mediana está levemente deslocada para baixo
+# a caixa com alzheimer está deslocada para baixo e a caixa sem alzheimer está levemente deslocada para cima
 
 # cálculo medidas de dispersão
 amplitude_mmse_arred <- max(dados$mmse_arred)- min(dados$mmse_arred)
