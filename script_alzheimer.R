@@ -212,7 +212,7 @@ legend("topright",
 
 # calculo medidas para ADL (Escore de Atividades de Vida Diária, variando de 0 a 10. Pontuações mais baixas indicam maior comprometimento)
 # arredondando os valores e criando uma nova variavel
-adl_arred <- round(dados$ADL)
+dados$adl_arred <- round(dados$ADL)
 
 media_adl_arred <- mean(dados$adl_arred)
 cat(media_adl_arred)
