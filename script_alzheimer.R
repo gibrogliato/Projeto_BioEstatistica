@@ -188,35 +188,32 @@ coef_var_mmse <- (desvio_padrao_mmse / media_mmse)*100
 cat("CV =", round(coef_var_mmse, 2),"%") #60.21%
 
 
-#Criando um vetor de valores para o eixox
-x_values3<-seq(min(df_filtrado$mmse_arred),max(df_filtrado$mmse_arred),length=760)
-#Calculando a densidade da distribuição normal com média e desvio padrão dos dados
-normal_curve3 <-dnorm(x_values3,mean= media_mmse,sd= desvio_padrao_mmse)
-#Ajustando o limite superior do eixo y com base no pico da curva normal
-max_density3 <-max(normal_curve3) * 1.2 #Adicionando uma margem de20%
-#Criando um histograma das pontuações
-hist(df_filtrado$MMSE,
-     main= "Histograma da pontuação no MMSE para pacientes com alzheimer",
-     xlab= "Pontuação",
-     ylab= "Frequência",
-     col= "lightblue",
-     border= "black",
-     probability= TRUE,
-     ylim= c(0,max_density3))
-#Adicionando linhas de referência para média,mediana e moda
-abline(v= media_mmse,col= "red",lwd= 2, lty= 2) #Média
-abline(v= mediana_mmse, col= "green", lwd= 2,lty= 2) #Mediana
-abline(v= moda_mmse, col="blue",lwd= 2, lty= 2) #Moda
-#Adicionando a curva normal
-lines(x_values3,normal_curve3, col= "darkred", lwd=2, lty= 1)
-#Adicionando legenda
-legend("topright",
-       legend= c("CurvaNormal", "Média", "Mediana", "Moda"),
-       col= c("darkred", "red", "green", "blue"),
-       lty= c(1, 2, 2, 2),
-       lwd= 2,
-       bty= "n")
+#criando uma amostra estratificada para realizar o teste t e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
+amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 18, "1" = 10), method = "srswor")
+amostra_final <- getdata(dados, amostra_estratificada)
+byf.shapiro(MMSE ~ Diagnosis, amostra_final)
+#Shapiro-Wilk normality tests (p valor é maior do que 0.05, então os dados podem ser considerados como uma distribuição normal)
 
+#data:  MMSE by Diagnosis 
+
+#W p-value
+#0 0.9518  0.4542
+#1 0.9374  0.5250
+
+t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
+#Welch Two Sample t-test (p valor é maior do que 0.05, logo hipótese nula não é rejeitada, não há diferenças significativas entre as médias das pontuações
+
+#data:  MMSE by Diagnosis
+#t = 0.64688, df = 17.552, p-value = 0.5261
+#alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+#95 percent confidence interval:
+#  -4.936870  9.317958
+#sample estimates:
+#  mean in group 0 mean in group 1 
+#15.05392        12.86337 
+
+boxplot(MMSE ~ Diagnosis, data = amostra_final, ylab="Pontuação MMSE",
+         xlab="Alzheimer")
 
 # calculo medidas para ADL (Escore de Atividades de Vida Diária, variando de 0 a 10. Pontuações mais baixas indicam maior comprometimento)
 # arredondando os valores e criando uma nova variavel
@@ -275,10 +272,31 @@ legend("topright",
        lwd= 2,
        bty= "n")
 
-# boxplot comparando pontuações de pacientes com e sem alzheimer
-boxplot(adl_arred ~ Diagnosis, data = dados,
-        main = "Pontuação no ADL",
-        xlab = "Alzheimer",
-        ylab = "Pontuação",
-        col = c("lightcoral", "lightgreen"),
-        names = c("Não", "Sim"))
+
+# criando uma amostra estratificada e realizando teste t para verificar se a presença de alzheimer influencia na pontuação do ADL
+amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
+amostra_final <- getdata(dados, amostra_estratificada)
+byf.shapiro(ADL ~ Diagnosis, amostra_final)
+#	Shapiro-Wilk normality tests (se p valor for maior que 0.05, significa que os dados podem ser considerados com distribuição normal)
+
+#data:  ADL by Diagnosis 
+
+#W p-value
+#0 0.9487  0.3478
+#1 0.9451  0.5263
+
+t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
+#Welch Two Sample t-test (p valor é menor do que 0.05, então hipótese alternativa é aceita, existem diferenças significativas entre as médias)
+
+#data:  ADL by Diagnosis
+#t = 5.5391, df = 25.553, p-value = 8.639e-06
+#alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+#95 percent confidence interval:
+#  2.304601 5.028018
+#sample estimates:
+#  mean in group 0 mean in group 1 
+#5.739978        2.073668
+
+# A presença de Alzheimer influencia na pontuação do ADL, pacientes sem alzheimer tiverem pontuações mais altas do que pacientes com alzheimer
+boxplot(ADL ~ Diagnosis, data = amostra_final, ylab="Pontuação ADL",
+                 xlab="Alzheimer")
