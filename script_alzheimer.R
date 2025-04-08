@@ -188,7 +188,7 @@ coef_var_mmse <- (desvio_padrao_mmse / media_mmse)*100
 cat("CV =", round(coef_var_mmse, 2),"%") #60.21%
 
 
-#criando uma amostra estratificada para realizar o teste t e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
+#criando uma amostra estratificada para realizar o teste t para amostras independentes e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
 amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 18, "1" = 10), method = "srswor")
 amostra_final <- getdata(dados, amostra_estratificada)
 byf.shapiro(MMSE ~ Diagnosis, amostra_final)
@@ -274,7 +274,7 @@ legend("topright",
        bty= "n")
 # pontuações estão bem distribuídas porque temos pacientes com e sem alzheimer misturados
 
-# criando uma amostra estratificada e realizando teste t para verificar se a presença de alzheimer influencia na pontuação do ADL
+# criando uma amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do ADL
 amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
 amostra_final <- getdata(dados, amostra_estratificada)
 byf.shapiro(ADL ~ Diagnosis, amostra_final)
