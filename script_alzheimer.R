@@ -251,6 +251,15 @@ cat(desvio_padrao_adl_arred)
 coef_var_adl_arred <- (desvio_padrao_adl_arred / media_adl_arred)*100
 cat("CV =", round(coef_var_adl_arred, 2),"%")
 
+# boxplot comparando pontuações de pacientes com e sem alzheimer
+boxplot(adl_arred ~ Diagnosis, data = dados,
+        main = "Pontuação no ADL",
+        xlab = "Alzheimer",
+        ylab = "Pontuação",
+        col = c("lightcoral", "lightgreen"),
+        names = c("Não", "Sim"))
+# pacientes sem alzheimer apresentam pontuações maiores (menor comprometimento)
+
 #Criando um vetor de valores para o eixox
 x_values2<-seq(min(dados$adl_arred),max(dados$adl_arred),length=2149)
 #Calculando a densidade da distribuição normal com média e desvio padrão dos dados
