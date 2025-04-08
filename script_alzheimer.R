@@ -157,7 +157,6 @@ cat("CV =", round(coef_var_mmse_arred, 2),"%") # 58.37%, alta variabilidade
                    lty= c(1, 2, 2, 2),
                    lwd= 2,
                    bty= "n")
-# histograma não segue a curva normal
 
 # removendo pacientes sem diagnóstico para alzheimer
 df_filtrado <- subset(dados, Diagnosis != 0)
