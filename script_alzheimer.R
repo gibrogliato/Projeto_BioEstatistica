@@ -199,6 +199,13 @@ byf.shapiro(MMSE ~ Diagnosis, amostra_final)
 #0 0.9559  0.5253
 #1 0.8919  0.1782
 
+amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
+leveneTest(MMSE ~ alzheimer, amostra_final, center=mean)
+#Levene's Test for Homogeneity of Variance (center = mean)
+#      Df F value Pr(>F)
+#group  1  0.7189 0.4042
+#      26 
+
 t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 #Welch Two Sample t-test (p valor é maior do que 0.05, logo hipótese nula não é rejeitada, não há diferenças significativas entre as médias das pontuações
 
@@ -285,6 +292,12 @@ byf.shapiro(ADL ~ Diagnosis, amostra_final)
 #0 0.9323  0.1708
 #1 0.9075  0.1697
 
+amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
+leveneTest(ADL ~ alzheimer, amostra_final, center=mean)
+#Levene's Test for Homogeneity of Variance (center = mean)
+#      Df F value Pr(>F)
+#group  1   6e-04 0.9807
+#      26 
 
 t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
 #Welch Two Sample t-test (p valor é menor do que 0.05, então hipótese alternativa é aceita, existem diferenças significativas entre as médias)
