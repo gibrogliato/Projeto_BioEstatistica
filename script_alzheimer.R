@@ -321,3 +321,25 @@ abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
 text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
 text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
 
+#Calculando medidas descritivas e dispersão para nível de educação
+
+media_educ <- mean(dados$EducationLevel)
+mediana_educ <- median(dados$EducationLevel)
+moda_educ <- as.numeric(names(sort(table(dados$EducationLevel), decreasing = TRUE)[1]))
+boxplot(dados$EducationLevel,
+                   main = "Boxplot do nível de educação",
+                   ylab = "Pontuação",
+                   col = "lightgreen")
+amplitude_educ <- max(dados$EducationLevel)- min(dados$EducationLevel)
+desvio_padrao_educ <- sd(dados$EducationLevel)
+variancia_mmse_educ <- var(dados$EducationLevel)
+coef_var_educ <- (desvio_padrao_educ / media_educ)*100
+hist(dados$EducationLevel)
+educ <- table(nivel=dados$EducationLevel, alzheimer=dados$Diagnosis)
+educ
+#      alzheimer
+#nivel   0   1
+#0      272 174
+#1      552 302
+#2      419 217
+#3      146  67
