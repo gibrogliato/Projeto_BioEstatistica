@@ -157,6 +157,7 @@ cat("CV =", round(coef_var_mmse_arred, 2),"%") # 58.37%, alta variabilidade
                    lty= c(1, 2, 2, 2),
                    lwd= 2,
                    bty= "n")
+# pelo histograma podemos ver que as pontuações estão bem distribuídas, já que temos dados de pacientes com e sem alzheimer misturados
 
 # removendo pacientes sem diagnóstico para alzheimer
 df_filtrado <- subset(dados, Diagnosis != 0)
@@ -168,7 +169,7 @@ cat("a média do teste para pacientes com alzheimer é", media_mmse)
 mediana_mmse <- median(df_filtrado$mmse_arred)
 cat(mediana_mmse)
 # 11.5
-
+# média e mediana são menores para pacientes com alzheimer
 moda_mmse <- as.numeric(names(sort(table(df_filtrado$mmse_arred), decreasing = TRUE)[1]))
 cat(moda_mmse)
 # 8
@@ -210,6 +211,8 @@ t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 #  mean in group 0 mean in group 1 
 #15.74323        11.21784  
 
+# não podemos afirmar que pacientes com alzheimer aprentam menores pontuações de MMSE (comprometimento cognitivo), pois não há diferenças significativas nas médias das pontuações
+# existem pacientes que tiveram pontuações mais baixas e não possuem alzheimer, pois o resultado do teste pode ter tido influência de outros fatores
 boxplot(MMSE ~ Diagnosis, data = amostra_final, ylab="Pontuação MMSE",
          xlab="Alzheimer")
 
@@ -269,7 +272,7 @@ legend("topright",
        lty= c(1, 2, 2, 2),
        lwd= 2,
        bty= "n")
-
+# pontuações estão bem distribuídas porque temos pacientes com e sem alzheimer misturados
 
 # criando uma amostra estratificada e realizando teste t para verificar se a presença de alzheimer influencia na pontuação do ADL
 amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
@@ -297,6 +300,7 @@ t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
 #6.045988        3.906610
 
 # A presença de Alzheimer influencia na pontuação do ADL, pacientes sem alzheimer tiverem pontuações mais altas do que pacientes com alzheimer
+# pacientes com alzheimer apresentam maior comprometimento/dificuldade ao realizar atividades diárias
 boxplot(ADL ~ Diagnosis, data = amostra_final, ylab="Pontuação ADL",
                  xlab="Alzheimer")
 # distribuição t de student
