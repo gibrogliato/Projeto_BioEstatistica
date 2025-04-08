@@ -195,22 +195,21 @@ byf.shapiro(MMSE ~ Diagnosis, amostra_final)
 #Shapiro-Wilk normality tests (p valor é maior do que 0.05, então os dados podem ser considerados como uma distribuição normal)
 
 #data:  MMSE by Diagnosis 
-
 #W p-value
-#0 0.9518  0.4542
-#1 0.9374  0.5250
+#0 0.9559  0.5253
+#1 0.8919  0.1782
 
 t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 #Welch Two Sample t-test (p valor é maior do que 0.05, logo hipótese nula não é rejeitada, não há diferenças significativas entre as médias das pontuações
 
 #data:  MMSE by Diagnosis
-#t = 0.64688, df = 17.552, p-value = 0.5261
+#t = 1.3456, df = 19.572, p-value = 0.1938
 #alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 #95 percent confidence interval:
-#  -4.936870  9.317958
+#  -2.499807 11.550590
 #sample estimates:
 #  mean in group 0 mean in group 1 
-#15.05392        12.86337 
+#15.74323        11.21784  
 
 boxplot(MMSE ~ Diagnosis, data = amostra_final, ylab="Pontuação MMSE",
          xlab="Alzheimer")
@@ -280,23 +279,46 @@ byf.shapiro(ADL ~ Diagnosis, amostra_final)
 #	Shapiro-Wilk normality tests (se p valor for maior que 0.05, significa que os dados podem ser considerados com distribuição normal)
 
 #data:  ADL by Diagnosis 
-
 #W p-value
-#0 0.9487  0.3478
-#1 0.9451  0.5263
+#0 0.9323  0.1708
+#1 0.9075  0.1697
+
 
 t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
 #Welch Two Sample t-test (p valor é menor do que 0.05, então hipótese alternativa é aceita, existem diferenças significativas entre as médias)
 
 #data:  ADL by Diagnosis
-#t = 5.5391, df = 25.553, p-value = 8.639e-06
+#data:  ADL by Diagnosis
+#t = 2.196, df = 22.601, p-value = 0.03863
 #alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 #95 percent confidence interval:
-#  2.304601 5.028018
+#  0.1220627 4.1566942
 #sample estimates:
 #  mean in group 0 mean in group 1 
-#5.739978        2.073668
+#6.045988        3.906610
 
 # A presença de Alzheimer influencia na pontuação do ADL, pacientes sem alzheimer tiverem pontuações mais altas do que pacientes com alzheimer
 boxplot(ADL ~ Diagnosis, data = amostra_final, ylab="Pontuação ADL",
                  xlab="Alzheimer")
+# distribuição t de student
+boxplot(ADL ~ Diagnosis, data = amostra_final, ylab="Pontuação ADL",
+                          xlab="Alzheimer")
+resultado_t <- t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
+t_obs <- resultado_t$statistic
+gl <- resultado_t$parameter
+alpha <- 0.05
+t_crit <- qt(1- alpha/2, df = gl)
+x <- seq(-4, 4, length = 200)
+y <- dt(x, df = gl)
+plot(x, y, type = "l", lwd = 2, col = "black",
+                     main = "Distribuição t de Student — Pontuação ADL",
+                     ylab = "Densidade", xlab = "Valor t")
+polygon(c(x[x <=-t_crit],-t_crit), c(y[x <=-t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
+polygon(c(x[x >= t_crit], t_crit), c(y[x >= t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
+abline(v = t_obs, col = "blue", lwd = 2, lty = 2)
+text(t_obs, dt(t_obs, df = gl) + 0.01,
+                     paste0("t calculado = ", round(t_obs, 2)), col = "blue", pos = 4, cex = 0.9)
+abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
+text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
+text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
+
