@@ -189,8 +189,10 @@ cat("CV =", round(coef_var_mmse, 2),"%") #60.21%
 
 
 #criando uma amostra estratificada para realizar o teste t para amostras independentes e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
+library(sampling)
 amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
 amostra_final <- getdata(dados, amostra_estratificada)
+library(RVAideMemoire)
 byf.shapiro(MMSE ~ Diagnosis, amostra_final)
 #Shapiro-Wilk normality tests (p valor é maior do que 0.05, então os dados podem ser considerados como uma distribuição normal)
 
@@ -202,6 +204,7 @@ byf.shapiro(MMSE ~ Diagnosis, amostra_final)
 #  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
+library(car)
 leveneTest(MMSE ~ alzheimer, amostra_final, center=mean)
 #      Df F value  Pr(>F)  
 #group  1  3.3875 0.07528 .
@@ -225,6 +228,27 @@ t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 # existem pacientes que tiveram pontuações mais baixas e não possuem alzheimer, pois o resultado do teste pode ter tido influência de outros fatores
 boxplot(MMSE ~ Diagnosis, data = amostra_final, ylab="Pontuação MMSE",
          xlab="Alzheimer")
+# gráfico
+boxplot(MMSE ~ Diagnosis, data = amostra_final, ylab="Pontuação MMSE",
+        xlab="Alzheimer")
+resultado_t <- t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
+t_obs <- resultado_t$statistic
+gl <- resultado_t$parameter
+alpha <- 0.05
+t_crit <- qt(1- alpha/2, df = gl)
+x <- seq(-4, 4, length = 200)
+y <- dt(x, df = gl)
+plot(x, y, type = "l", lwd = 2, col = "black",
+     main = "Distribuição t de Student — Pontuação MMSE",
+     ylab = "Densidade", xlab = "Valor t")
+polygon(c(x[x <=-t_crit],-t_crit), c(y[x <=-t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
+polygon(c(x[x >= t_crit], t_crit), c(y[x >= t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
+abline(v = t_obs, col = "blue", lwd = 2, lty = 2)
+text(t_obs, dt(t_obs, df = gl) + 0.01,
+     paste0("t calculado = ", round(t_obs, 2)), col = "blue", pos = 4, cex = 0.9)
+abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
+text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
+text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
 
 # calculo medidas para ADL (Escore de Atividades de Vida Diária, variando de 0 a 10. Pontuações mais baixas indicam maior comprometimento)
 # arredondando os valores e criando uma nova variavel
