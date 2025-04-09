@@ -189,34 +189,37 @@ cat("CV =", round(coef_var_mmse, 2),"%") #60.21%
 
 
 #criando uma amostra estratificada para realizar o teste t para amostras independentes e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
-amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 18, "1" = 10), method = "srswor")
+amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
 amostra_final <- getdata(dados, amostra_estratificada)
 byf.shapiro(MMSE ~ Diagnosis, amostra_final)
 #Shapiro-Wilk normality tests (p valor é maior do que 0.05, então os dados podem ser considerados como uma distribuição normal)
 
 #data:  MMSE by Diagnosis 
-#W p-value
-#0 0.9559  0.5253
-#1 0.8919  0.1782
+#       W p-value  
+#0 0.9105 0.06503 .
+#1 0.9010 0.13805  
+#---
+#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
 leveneTest(MMSE ~ alzheimer, amostra_final, center=mean)
-#Levene's Test for Homogeneity of Variance (center = mean)
-#      Df F value Pr(>F)
-#group  1  0.7189 0.4042
-#      26 
+#      Df F value  Pr(>F)  
+#group  1  3.3875 0.07528 .
+#     31                  
+#---
+#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 #Welch Two Sample t-test (p valor é maior do que 0.05, logo hipótese nula não é rejeitada, não há diferenças significativas entre as médias das pontuações
 
 #data:  MMSE by Diagnosis
-#t = 1.3456, df = 19.572, p-value = 0.1938
+#t = 0.78549, df = 30.858, p-value = 0.4382
 #alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 #95 percent confidence interval:
-#  -2.499807 11.550590
+#  -3.854578  8.681993
 #sample estimates:
 #  mean in group 0 mean in group 1 
-#15.74323        11.21784  
+#15.43867        13.02497
 
 # não podemos afirmar que pacientes com alzheimer aprentam menores pontuações de MMSE (comprometimento cognitivo), pois não há diferenças significativas nas médias das pontuações
 # existem pacientes que tiveram pontuações mais baixas e não possuem alzheimer, pois o resultado do teste pode ter tido influência de outros fatores
