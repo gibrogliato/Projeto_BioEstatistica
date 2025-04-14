@@ -125,3 +125,4 @@ moda <- as.numeric(names(which.max(table(dados_genero))))  # Moda (0 ou 1)
 freq_tabela <- table(dados_genero)  # Tabela de frequências
 print(freq_tabela)
 
+
