@@ -31,56 +31,29 @@ ctable(x = dados$Diagnosis, y = dados$MemoryComplaints, prop = "r", headings = F
 tabela_sintomas <- table(esquecimento = dados$Forgetfulness, reclamações_memória = dados$MemoryComplaints, confusão = dados$Confusion, desorientação = dados$Disorientation, mudança_personalidade = dados$PersonalityChanges, dificuldade_tarefas = dados$DifficultyCompletingTasks, alzheimer = dados$Diagnosis)
 ftable(tabela_sintomas)
 # a partir desta tabela, e analisando somente os diagnosticados com alzheimer, podemos ver que:
+
 # 162 pacientes não apresentaram nenhum dos sintomas 
 # 31 apresentaram somente dificuldade em concluir tarefas
-# 24 tiveram mudanças de personalidade
+# 24 tiveram somente mudanças de personalidade
 # 10 tiveram mudanças de personalidade e dificuldade em concluir tarefas
-# 29 apresentaram desorientação
-# 5 apresentaram desorientação e dificuldade em concluir tarefas
-# 4 apresentaram desorientação e mudanças de personalidade
-# 1 teve desorientação, mudança de personalidade e dificuldade em concluir tarefas
-# 44 apresentaram confusão
-# 4 apresentaram confusão e dificuldade em concluir tarefas
-# 9 tiveram confusão e mudanças de personalidade
-# 11 tiveram confusão e desorientação
-# 1 teve confusão, desorientação e mudanças na personalidade
+# 29 apresentaram somente desorientação
+# 10 apresentaram desorientação e outros sintomas (sem reclamações de memória ou esquecimento)
+# 44 apresentaram somente confusão
+# 25 apresentaram confusão e outros sintomas (sem reclamações de memória ou esquecimento)
+
 # 86 tiveram reclamações de memória
-# 23 tiveram reclamações de memória e dificuldade em concluir tarefas
-# 16 tiveram reclamações de memória e mudanças na personalidade
-# 6 tiveram reclamações de memória, mudanças na personalidade e dificuldade em concluir tarefas
-# 22 tiveram reclamações de memória e desorientação
-# 3 tiveram reclamações de memória, desorientação e dificuldade em finalizar tarefas
-# 4 tiveram reclamações de memória, desorientação e mudanças na personalidade
-# 21 tiveram reclamações de memória e confusão
-# 6 tiveram reclamações de memória, confusão e dificuldade em concluir tarefas
-# 5 tiveram reclamações de memória, confusão e mudanças de personalidade
-# 4 tiveram reclamações de memória, confusão e desorientação
+# 110 tiveram reclamações de memória e outros sintomas (sem esquecimento)
+
 # 74 apresentaram esquecimento
-# 12 apresentaram esquecimento e dificuldade em concluir tarefas
-# 8 apresentaram esquecimento e mudanças de personalidade
-# 4 apresentaram esquecimento, mudanças de personalidade e dificuldade em concluir tarefas
-# 10 apresentaram esquecimento e desorientação
-# 1 apresentou esquecimento, desorientação e dificuldade em concluir tarefas
-# 2 apresentaram esquecimento, desorientação e mudanças na personalidade
-# 18 apresentaram esquecimento e confusão
-# 4 apresentaram esquecimento, confusão e dificuldade em concluir tarefas
-# 3 apresentaram esquecimento, confusão e mudanças na personalidade
-# 1 apresentou esquecimento, confusão e desorientação
-# 2 apresentaram esquecimento, confusão, desorientação e mudanças na personalidade
+# 65 apresentaram esquecimento e outros sintomas (sem reclamação de memória)
+
 # 51 apresentaram esquecimento e reclamações de memória
-# 12 apresentaram esquecimento, reclamações de memória e dificuldade em concluir tarefas
-# 3 apresentaram esquecimento, reclamações de memória e mudanças de personalidade
-# 1 apresentou esquecimento, reclamações de memória, mudanças de personalidade e dificuldade em concluir tarefas
-# 5 apresentaram esquecimento, reclamações de memória e desorientação
-# 1 apresentou esquecimento, reclamações de memória, desorientação e dificuldade em concluir tarefas
-# 2 apresentaram esquecimento, reclamações de memória, desorientação e mudanças de personalidade
-# 10 apresentaram esquecimento, reclamações de memória e confusão
-# 2 apresentaram esquecimento, reclamações de memória, confusão e mudanças de personalidade
-# 3 apresentaram esquecimento, reclamações de memória, confusão e desorientação
+# 39 apresentaram esquecimento, reclamações de memória e outros sintomas
 
 # a partir desses dados, podemos ver que dos 760 pacientes que foram diagnosticados com alzheimer, 162 (21.31%) não apresentaram nenhum dos sintomas e 598 apresentaram 1 ou mais sintomas
 # os sintomas mais frequentes foram esquecimento e reclamações de memória (425 ou 55.92% pacientes apresentaram pelo menos um desses sintomas), enquanto confusão, desorientação, mudanças de personalidade e dificuldade em concluir tarefas foram sintomas que aparecem bastante em conjunto com os dois sintomas principais
 # 173 (22.76%) pacientes apresentaram os sintomas confusão, desorientação, mudanças de personalidade e dificuldade em concluir tarefas (apresentando um ou mais desses sintomas mas sem esquecimento e reclamações de memória)
+
 
 # análise da pontuação do MMSE (mini exame de estado mental pontuações variam de 0 a 30), onde pontuações mais baixas indicam comprometimento cognitivo (diminuição das funçõescognitivas como memória, atenção, raciocínio etc)
 # cálculo média, moda, mediana
