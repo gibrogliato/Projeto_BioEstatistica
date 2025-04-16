@@ -1,22 +1,24 @@
+
 #Vamos estudar as correlações possíveis nas variáveis que analisamos antes. 
 #Variáveis: idade, gênero, IMC, atividade física, qualidade de sono e consumo de álcool. 
 
-#Veremos se a Idade tem correlação com o diagnóstico
-correlacao_idade <- cor(dados_alzheimer$Age, dados_alzheimer$Diagnosis, method = "pearson")
-sprintf("Coeficiente de Correlação de Pearson: %.4f", correlacao_idade)
+variaveis <- c("Age", "Gender", "BMI", "PhysicalActivity", 
+               "AlcoholConsumption", "SleepQuality")
 
-#Veremos se o IMC tem correlação com o diagnóstico
-correlacao_imc <- cor(dados_alzheimer$BMI, dados_alzheimer$Diagnosis, method = "pearson")
-sprintf("Coeficiente de Correlação de Pearson: %.4f", correlacao_imc)
+# Converter Diagnosis para numérico
+dados_alzheimer$Diagnosis <- as.numeric(as.character(dados_alzheimer$Diagnosis))
 
-#Veremos se a atividade física tem correlação com o diagnóstico
-correlacao_af <- cor(dados_alzheimer$PhysicalActivity, dados_alzheimer$Diagnosis, method = "pearson")
-sprintf("Coeficiente de Correlação de Pearson: %.4f", correlacao_af)
+correlacoes <- sapply(variaveis, function(var) {
+  dados_alzheimer[[var]] <- as.numeric(as.character(dados_alzheimer[[var]]))  # garante que está numérico
+  cor(dados_alzheimer[[var]], dados_alzheimer$Diagnosis, method = "pearson")
+})
 
-#Veremos se a qualidade de sono tem correlação com o diagnóstico
-correlacao_sono <- cor(dados_alzheimer$SleepQuality, dados_alzheimer$Diagnosis, method = "pearson")
-sprintf("Coeficiente de Correlação de Pearson: %.4f", correlacao_sono)
+# Montar a tabela com os resultados
+tabela_correlacoes <- data.frame(
+  Variavel = variaveis,
+  Correlacao_com_Diagnostico = round(correlacoes, 4)
+)
 
-#Por fim, veremos se o consumo de álcool tem correlação com o diagnóstico
-correlacao_alcool <- cor(dados_alzheimer$AlcoholConsumption, dados_alzheimer$Diagnosis, method = "pearson")
-sprintf("Coeficiente de Correlação de Pearson: %.4f", correlacao_alcool)
+# Ordenar pela correlação
+tabela_correlacoes <- tabela_correlacoes[order(-abs(tabela_correlacoes$Correlacao_com_Diagnostico)), ]
+print(tabela_correlacoes, row.names = FALSE)
