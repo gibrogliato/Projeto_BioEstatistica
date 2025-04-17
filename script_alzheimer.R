@@ -132,33 +132,6 @@ cat("CV =", round(coef_var_mmse_arred, 2),"%") # 58.37%, alta variabilidade
                    bty= "n")
 # pelo histograma podemos ver que as pontuações estão bem distribuídas, já que temos dados de pacientes com e sem alzheimer misturados
 
-# removendo pacientes sem diagnóstico para alzheimer
-df_filtrado <- subset(dados, Diagnosis != 0)
-# cálculo média
-media_mmse <- mean(df_filtrado$mmse_arred)
-cat("a média do teste para pacientes com alzheimer é", media_mmse)
-# 12
-
-mediana_mmse <- median(df_filtrado$mmse_arred)
-cat(mediana_mmse)
-# 11.5
-# média e mediana são menores para pacientes com alzheimer
-moda_mmse <- as.numeric(names(sort(table(df_filtrado$mmse_arred), decreasing = TRUE)[1]))
-cat(moda_mmse)
-# 8
-
-# cálculo medidas de dispersão
-amplitude_mmse <- max(df_filtrado$mmse_arred)- min(df_filtrado$mmse_arred)
-cat(amplitude_mmse) # 30
-
-desvio_padrao_mmse <- sd(df_filtrado$mmse_arred)
-variancia_mmse <- var(df_filtrado$mmse_arred)
-cat(variancia_mmse) # 52.23
-cat(desvio_padrao_mmse) # 7.23
-
-
-coef_var_mmse <- (desvio_padrao_mmse / media_mmse)*100
-cat("CV =", round(coef_var_mmse, 2),"%") #60.21%
 
 
 #criando uma amostra estratificada para realizar o teste t para amostras independentes e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
