@@ -14,7 +14,7 @@ ctable(x = dados$Diagnosis, y = dados$Forgetfulness, prop = "r", headings = FALS
 # dos pacientes que foram diagnosticados com alzheimer (1), 30.1% (229) relataram esquecimento e 69.9% (531) não
 # já os pacientes sem a doença, 30.2% (419) relataram esquecimento e 69.8% (970) não
 
-# freuência dos pacientes com e sem alzheimer que apresentaram ou não reclamações de memória
+# frequência dos pacientes com e sem alzheimer que apresentaram ou não reclamações de memória
 ctable(x = dados$Diagnosis, y = dados$MemoryComplaints, prop = "r", headings = FALSE)
 
 #----------- ------------------ -------------- ------------- ---------------
@@ -26,6 +26,53 @@ ctable(x = dados$Diagnosis, y = dados$MemoryComplaints, prop = "r", headings = F
 #----------- ------------------ -------------- ------------- ---------------
 # dos pacientes que foram diagnosticados com alzheimer (1), 37.6% (286) apresentaram reclamações de memória e 62.4% (474) não
 # já os pacientes sem a doença, 11.6% (161) tiveram reclamações de memória e 88.4% (1228) não
+
+# frequência dos pacientes com e sem alzheimer que apresentaram confusão
+ctable(x = dados$Diagnosis, y = dados$Confusion, prop = "r", headings = FALSE)
+
+#----------- ----------- -------------- ------------- ---------------
+#  Confusion              0             1           Total
+#Diagnosis                                                         
+#0                   1096 (78.9%)   293 (21.1%)   1389 (100.0%)
+#1                    612 (80.5%)   148 (19.5%)    760 (100.0%)
+#Total               1708 (79.5%)   441 (20.5%)   2149 (100.0%)
+#----------- ----------- -------------- ------------- ---------------
+
+# frequência dos pacientes com e sem alzheimer que apresentaram desorientação
+ctable(x = dados$Diagnosis, y = dados$Disorientation, prop = "r", headings = FALSE)
+
+#----------- ---------------- -------------- ------------- ---------------
+#  Disorientation              0             1           Total
+#Diagnosis                                                              
+#0                        1160 (83.5%)   229 (16.5%)   1389 (100.0%)
+#1                         649 (85.4%)   111 (14.6%)    760 (100.0%)
+#Total                    1809 (84.2%)   340 (15.8%)   2149 (100.0%)
+#----------- ---------------- -------------- ------------- ---------------
+
+# frequência dos pacientes com e sem alzheimer que apresentaram mudanças na personalidade
+ctable(x = dados$Diagnosis, y = dados$PersonalityChanges, prop = "r", headings = FALSE)
+
+#----------- -------------------- -------------- ------------- ---------------
+#  PersonalityChanges              0             1           Total
+#Diagnosis                                                                  
+#0                            1172 (84.4%)   217 (15.6%)   1389 (100.0%)
+#1                             653 (85.9%)   107 (14.1%)    760 (100.0%)
+#Total                        1825 (84.9%)   324 (15.1%)   2149 (100.0%)
+#----------- -------------------- -------------- ------------- ---------------
+
+# frequência dos pacientes com e sem alzheimer que apresentaram dificuldade em completar tarefas
+ctable(x = dados$Diagnosis, y = dados$DifficultyCompletingTasks, prop = "r", headings = FALSE)
+
+#----------- --------------------------- -------------- ------------- ---------------
+#  DifficultyCompletingTasks              0             1           Total
+#Diagnosis                                                                         
+#0                                   1172 (84.4%)   217 (15.6%)   1389 (100.0%)
+#1                                    636 (83.7%)   124 (16.3%)    760 (100.0%)
+#Total                               1808 (84.1%)   341 (15.9%)   2149 (100.0%)
+#----------- --------------------------- -------------- ------------- ---------------
+
+
+
 
 # criando tabela com todos os sintomas e verificando a presença de alzheimer
 tabela_sintomas <- table(esquecimento = dados$Forgetfulness, reclamações_memória = dados$MemoryComplaints, confusão = dados$Confusion, desorientação = dados$Disorientation, mudança_personalidade = dados$PersonalityChanges, dificuldade_tarefas = dados$DifficultyCompletingTasks, alzheimer = dados$Diagnosis)
@@ -53,6 +100,60 @@ ftable(tabela_sintomas)
 # a partir desses dados, podemos ver que dos 760 pacientes que foram diagnosticados com alzheimer, 162 (21.31%) não apresentaram nenhum dos sintomas e 598 apresentaram 1 ou mais sintomas
 # os sintomas mais frequentes foram esquecimento e reclamações de memória (425 ou 55.92% pacientes apresentaram pelo menos um desses sintomas), enquanto confusão, desorientação, mudanças de personalidade e dificuldade em concluir tarefas foram sintomas que aparecem bastante em conjunto com os dois sintomas principais
 # 173 (22.76%) pacientes apresentaram os sintomas confusão, desorientação, mudanças de personalidade e dificuldade em concluir tarefas (apresentando um ou mais desses sintomas mas sem esquecimento e reclamações de memória)
+
+# verificando se existe associação entre os sintomas e o diagnóstico
+# como são variáveis categóricas, usamos o método qui-quadrado
+
+
+chisq.test(table(dados$Diagnosis, dados$Forgetfulness))
+
+#Pearson's Chi-squared test with Yates' continuity correction
+
+#data:  table(dados$Diagnosis, dados$Forgetfulness)
+#X-squared = 1.2942e-29, df = 1, p-value = 1
+# não há associação entre esquecimento e o diagnóstico de alzheimer
+
+chisq.test(table(dados$Diagnosis, dados$MemoryComplaints))
+
+#Pearson's Chi-squared test with Yates' continuity correction
+
+#data:  table(dados$Diagnosis, dados$MemoryComplaints)
+#X-squared = 200.62, df = 1, p-value < 2.2e-16
+# p valor é menor do que 0.05
+# existe associação entre reclamações de memória e diagnóstico
+
+chisq.test(table(dados$Diagnosis, dados$Confusion))
+
+#Pearson's Chi-squared test with Yates' continuity correction
+
+#data:  table(dados$Diagnosis, dados$Confusion)
+#X-squared = 0.69479, df = 1, p-value = 0.4045
+# não existe associação entre confusão e diagnóstico
+
+chisq.test(table(dados$Diagnosis, dados$Disorientation))
+
+#Pearson's Chi-squared test with Yates' continuity correction
+
+#data:  table(dados$Diagnosis, dados$Disorientation)
+#X-squared = 1.1681, df = 1, p-value = 0.2798
+# não existe associação entre desorientação e diagnóstico
+
+chisq.test(table(dados$Diagnosis, dados$PersonalityChanges))
+
+#Pearson's Chi-squared test with Yates' continuity correction
+
+#data:  table(dados$Diagnosis, dados$PersonalityChanges)
+#X-squared = 0.79778, df = 1, p-value = 0.3718
+# não existe associação entre mudanças de personalidade e diagnóstico
+
+chisq.test(table(dados$Diagnosis, dados$DifficultyCompletingTasks))
+
+#Pearson's Chi-squared test with Yates' continuity correction
+
+#data:  table(dados$Diagnosis, dados$DifficultyCompletingTasks)
+#X-squared = 0.12863, df = 1, p-value = 0.7199
+# não há associação entre dificuldade em completar tarefas e diagnóstico
+
 
 
 # análise da pontuação do MMSE (mini exame de estado mental pontuações variam de 0 a 30), onde pontuações mais baixas indicam comprometimento cognitivo (diminuição das funçõescognitivas como memória, atenção, raciocínio etc)
