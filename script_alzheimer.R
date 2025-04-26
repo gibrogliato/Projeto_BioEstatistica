@@ -303,12 +303,15 @@ dados$adl_arred <- round(dados$ADL)
 
 media_adl_arred <- mean(dados$adl_arred)
 cat(media_adl_arred)
+# 4.985575
 
 mediana_adl_arred <- median(dados$adl_arred)
 cat(mediana_adl_arred)
+# 5
 
 moda_adl_arred <- as.numeric(names(sort(table(dados$adl_arred), decreasing = TRUE)[1]))
 cat(moda_adl_arred)
+# 9
 
 boxplot(dados$adl_arred,
                  main = "Boxplot do ADL",
@@ -317,13 +320,17 @@ boxplot(dados$adl_arred,
 
 amplitude_adl_arred <- max(dados$adl_arred)- min(dados$adl_arred)
 cat(amplitude_adl_arred)
+# 10
 
 desvio_padrao_adl_arred <- sd(dados$adl_arred)
 variancia_adl_arred <- var(dados$adl_arred)
 cat(variancia_adl_arred)
+# 8.949978
 cat(desvio_padrao_adl_arred)
+# 2.991651
 coef_var_adl_arred <- (desvio_padrao_adl_arred / media_adl_arred)*100
 cat("CV =", round(coef_var_adl_arred, 2),"%")
+# CV = 60.01 %
 
 # boxplot comparando pontuações de pacientes com e sem alzheimer
 boxplot(adl_arred ~ Diagnosis, data = dados,
