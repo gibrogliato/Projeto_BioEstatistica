@@ -60,19 +60,6 @@ ctable(x = dados$Diagnosis, y = dados$PersonalityChanges, prop = "r", headings =
 #Total                        1825 (84.9%)   324 (15.1%)   2149 (100.0%)
 #----------- -------------------- -------------- ------------- ---------------
 
-# frequência dos pacientes com e sem alzheimer que apresentaram dificuldade em completar tarefas
-ctable(x = dados$Diagnosis, y = dados$DifficultyCompletingTasks, prop = "r", headings = FALSE)
-
-#----------- --------------------------- -------------- ------------- ---------------
-#  DifficultyCompletingTasks              0             1           Total
-#Diagnosis                                                                         
-#0                                   1172 (84.4%)   217 (15.6%)   1389 (100.0%)
-#1                                    636 (83.7%)   124 (16.3%)    760 (100.0%)
-#Total                               1808 (84.1%)   341 (15.9%)   2149 (100.0%)
-#----------- --------------------------- -------------- ------------- ---------------
-
-
-
 
 # criando tabela com todos os sintomas e verificando a presença de alzheimer
 tabela_sintomas <- table(esquecimento = dados$Forgetfulness, reclamações_memória = dados$MemoryComplaints, confusão = dados$Confusion, desorientação = dados$Disorientation, mudança_personalidade = dados$PersonalityChanges, dificuldade_tarefas = dados$DifficultyCompletingTasks, alzheimer = dados$Diagnosis)
@@ -145,15 +132,6 @@ chisq.test(table(dados$Diagnosis, dados$PersonalityChanges))
 #data:  table(dados$Diagnosis, dados$PersonalityChanges)
 #X-squared = 0.79778, df = 1, p-value = 0.3718
 # não existe associação entre mudanças de personalidade e diagnóstico
-
-chisq.test(table(dados$Diagnosis, dados$DifficultyCompletingTasks))
-
-#Pearson's Chi-squared test with Yates' continuity correction
-
-#data:  table(dados$Diagnosis, dados$DifficultyCompletingTasks)
-#X-squared = 0.12863, df = 1, p-value = 0.7199
-# não há associação entre dificuldade em completar tarefas e diagnóstico
-
 
 
 # análise da pontuação do MMSE (mini exame de estado mental pontuações variam de 0 a 30), onde pontuações mais baixas indicam comprometimento cognitivo (diminuição das funçõescognitivas como memória, atenção, raciocínio etc)
