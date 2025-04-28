@@ -75,35 +75,6 @@ coef_var_mmse_arred <- (desvio_padrao_mmse_arred / media_mmse_arred)*100
 cat("CV =", round(coef_var_mmse_arred, 2),"%") # 58.37%, alta variabilidade 
 
 
-#Criando um vetor de valores para o eixox
- x_values<-seq(min(dados$mmse_arred),max(dados$mmse_arred),length=2149)
- #Calculando a densidade da distribuição normal com média e desvio padrão dos dados
-   normal_curve <-dnorm(x_values,mean= media_mmse_arred,sd= desvio_padrao_mmse_arred)
- #Ajustando o limite superior do eixo y com base no pico da curva normal
-   max_density <-max(normal_curve) * 1.2 #Adicionando uma margem de20%
- #Criando um histograma das pontuações do MMSE
-   hist(dados$mmse_arred,
-               main= "Histograma da pontuação no MMSE",
-               xlab= "Pontuação",
-               ylab= "Frequência",
-               col= "lightblue",
-               border= "black",
-               probability= TRUE,
-               ylim= c(0,max_density))
- #Adicionando linhas de referência para média,mediana e moda
- abline(v= media_mmse_arred,col= "red",lwd= 2, lty= 2) #Média
- abline(v= mediana_mmse_arred, col= "green", lwd= 2,lty= 2) #Mediana
- abline(v= moda_mmse_arred, col="blue",lwd= 2, lty= 2) #Moda
- #Adicionando a curva normal
-   lines(x_values,normal_curve, col= "darkred", lwd=2, lty= 1)
- #Adicionando legenda
-   legend("topright",
-                   legend= c("CurvaNormal", "Média", "Mediana", "Moda"),
-                   col= c("darkred", "red", "green", "blue"),
-                   lty= c(1, 2, 2, 2),
-                   lwd= 2,
-                   bty= "n")
-
 # boxplot comparando pontuações de pacientes com e sem alzheimer
 boxplot(mmse_arred ~ Diagnosis, data = dados,
                  main = "Pontuação no MMSE",
@@ -156,8 +127,6 @@ t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 #15.43867        13.02497
 
 # gerando o gráfico da distribuição t de student
-boxplot(MMSE ~ Diagnosis, data = amostra_final, ylab="Pontuação MMSE",
-        xlab="Alzheimer")
 resultado_t <- t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 t_obs <- resultado_t$statistic
 gl <- resultado_t$parameter
@@ -210,34 +179,6 @@ coef_var_adl_arred <- (desvio_padrao_adl_arred / media_adl_arred)*100
 cat("CV =", round(coef_var_adl_arred, 2),"%")
 # CV = 60.01 %
 
-#Criando um vetor de valores para o eixox
-x_values2<-seq(min(dados$adl_arred),max(dados$adl_arred),length=2149)
-#Calculando a densidade da distribuição normal com média e desvio padrão dos dados
-normal_curve2 <-dnorm(x_values2,mean= media_adl_arred,sd= desvio_padrao_adl_arred)
-#Ajustando o limite superior do eixo y com base no pico da curva normal
-max_density2 <-max(normal_curve2) * 1.2 #Adicionando uma margem de20%
-#Criando um histograma das pontuações do ADL
-hist(dados$adl_arred,
-     main= "Histograma da pontuação ADL",
-     xlab= "Pontuação",
-     ylab= "Frequência",
-     col= "lightblue",
-     border= "black",
-     probability= TRUE,
-     ylim= c(0,max_density2))
-#Adicionando linhas de referência para média,mediana e moda
-abline(v= media_adl_arred,col= "red",lwd= 2, lty= 2) #Média
-abline(v= mediana_adl_arred, col= "green", lwd= 2,lty= 2) #Mediana
-abline(v= moda_adl_arred, col="blue",lwd= 2, lty= 2) #Moda
-#Adicionando a curva normal
-lines(x_values2,normal_curve2, col= "darkred", lwd=2, lty= 1)
-#Adicionando legenda
-legend("topright",
-       legend= c("CurvaNormal", "Média", "Mediana", "Moda"),
-       col= c("darkred", "red", "green", "blue"),
-       lty= c(1, 2, 2, 2),
-       lwd= 2,
-       bty= "n")
 
 # boxplot comparando pontuações de pacientes com e sem alzheimer
 boxplot(adl_arred ~ Diagnosis, data = dados,
@@ -287,8 +228,6 @@ t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
 
 
 # gerando o gráfico da distribuição t de student
-boxplot(ADL ~ Diagnosis, data = amostra_final, ylab="Pontuação ADL",
-                          xlab="Alzheimer")
 resultado_t <- t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
 t_obs <- resultado_t$statistic
 gl <- resultado_t$parameter
@@ -308,3 +247,76 @@ abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
 text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
 text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
 
+# analises das pontuações Functional Assessment
+
+# gerando um boxplot das pontuações
+boxplot(FunctionalAssessment ~ Diagnosis, data = dados,
+                 main = "Pontuação no Functional Assessment",
+                 xlab = "Alzheimer",
+                 ylab = "Pontuação",
+                 col = c("lightcoral", "lightgreen"),
+                 names = c("Não", "Sim"))
+
+# criando uma amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do Functional Assessment
+amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 18, "1" = 10), method = "srswor")
+amostra_final <- getdata(dados, amostra_estratificada)
+
+# realizando teste de normalidade
+byf.shapiro(FunctionalAssessment ~ Diagnosis, amostra_final)
+
+#Shapiro-Wilk normality tests
+#data:  FunctionalAssessment by Diagnosis 
+
+#W p-value
+#0 0.9140  0.1014
+#1 0.8841  0.1454
+
+
+# traduzindo 0 e 1 do diagnóstico em variáveis nominais para realizar o teste de levene
+# obs: sem a realização deste passo o teste não estava funcionando
+amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
+
+# realizando teste de homogeneidade
+leveneTest(FunctionalAssessment ~ alzheimer, amostra_final, center=mean)
+#Levene's Test for Homogeneity of Variance (center = mean)
+#      Df F value  Pr(>F)  
+#group  1  3.4766 0.07357 .
+#      26                  
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+# executando teste t
+t.test(FunctionalAssessment ~ Diagnosis, amostra_final, var.equal=FALSE)
+
+#	Welch Two Sample t-test
+
+#data:  FunctionalAssessment by Diagnosis
+#t = 4.3508, df = 25.981, p-value = 0.0001867
+#alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+#95 percent confidence interval:
+# 1.836557 5.126260
+#sample estimates:
+#mean in group 0 mean in group 1 
+#       6.397918        2.916510
+
+
+# gerando gráfico da distribuição t de student       
+resultado_t <- t.test(FunctionalAssessment ~ Diagnosis, amostra_final, var.equal=FALSE)
+t_obs <- resultado_t$statistic
+gl <- resultado_t$parameter
+alpha <- 0.05
+t_crit <- qt(1- alpha/2, df = gl)
+x <- seq(-5, 5, length = 200)
+y <- dt(x, df = gl)
+plot(x, y, type = "l", lwd = 2, col = "black",
+             main = "Distribuição t de Student — Pontuação Functional Assessment",
+             ylab = "Densidade", xlab = "Valor t")
+polygon(c(x[x <=-t_crit],-t_crit), c(y[x <=-t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
+polygon(c(x[x >= t_crit], t_crit), c(y[x >= t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
+abline(v = t_obs, col = "blue", lwd = 2, lty = 2)
+text(t_obs, dt(t_obs, df = gl) + 0.01,
+             paste0("t calculado = ", round(t_obs, 2)), col = "blue", pos = 4, cex = 0.9)
+abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
+text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
+text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
