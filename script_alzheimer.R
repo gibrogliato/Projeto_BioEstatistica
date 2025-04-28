@@ -1,141 +1,51 @@
 # análises das frequências dos sintomas e medidas das pontuações de MMSE e ADL. obs: ainda falta analiser os resultados das medidas
 # abrindo o banco de dados
 dados <- read.csv('alzheimers_disease_data.csv')
-# calculando a frequência de pacientes com e sem alzheimer que relataram ou não o sintoma de esquecimento
-ctable(x = dados$Diagnosis, y = dados$Forgetfulness, prop = "r", headings = FALSE)
-#----------- --------------- -------------- ------------- ---------------
-#          Forgetfulness      0             1           Total
-#Diagnosis                                                             
-#0                       970 (69.8%)   419 (30.2%)   1389 (100.0%)
-#1                       531 (69.9%)   229 (30.1%)    760 (100.0%)
-#Total                  1501 (69.8%)   648 (30.2%)   2149 (100.0%)
-#----------- --------------- -------------- ------------- ---------------
-
-# dos pacientes que foram diagnosticados com alzheimer (1), 30.1% (229) relataram esquecimento e 69.9% (531) não
-# já os pacientes sem a doença, 30.2% (419) relataram esquecimento e 69.8% (970) não
-
-# frequência dos pacientes com e sem alzheimer que apresentaram ou não reclamações de memória
-ctable(x = dados$Diagnosis, y = dados$MemoryComplaints, prop = "r", headings = FALSE)
-
-#----------- ------------------ -------------- ------------- ---------------
-#          MemoryComplaints         0             1           Total
-#Diagnosis                                                                
-#0                           1228 (88.4%)   161 (11.6%)   1389 (100.0%)
-#1                            474 (62.4%)   286 (37.6%)    760 (100.0%)
-#Total                       1702 (79.2%)   447 (20.8%)   2149 (100.0%)
-#----------- ------------------ -------------- ------------- ---------------
-# dos pacientes que foram diagnosticados com alzheimer (1), 37.6% (286) apresentaram reclamações de memória e 62.4% (474) não
-# já os pacientes sem a doença, 11.6% (161) tiveram reclamações de memória e 88.4% (1228) não
-
-# frequência dos pacientes com e sem alzheimer que apresentaram confusão
-ctable(x = dados$Diagnosis, y = dados$Confusion, prop = "r", headings = FALSE)
-
-#----------- ----------- -------------- ------------- ---------------
-#  Confusion              0             1           Total
-#Diagnosis                                                         
-#0                   1096 (78.9%)   293 (21.1%)   1389 (100.0%)
-#1                    612 (80.5%)   148 (19.5%)    760 (100.0%)
-#Total               1708 (79.5%)   441 (20.5%)   2149 (100.0%)
-#----------- ----------- -------------- ------------- ---------------
-
-# frequência dos pacientes com e sem alzheimer que apresentaram desorientação
-ctable(x = dados$Diagnosis, y = dados$Disorientation, prop = "r", headings = FALSE)
-
-#----------- ---------------- -------------- ------------- ---------------
-#  Disorientation              0             1           Total
-#Diagnosis                                                              
-#0                        1160 (83.5%)   229 (16.5%)   1389 (100.0%)
-#1                         649 (85.4%)   111 (14.6%)    760 (100.0%)
-#Total                    1809 (84.2%)   340 (15.8%)   2149 (100.0%)
-#----------- ---------------- -------------- ------------- ---------------
-
-# frequência dos pacientes com e sem alzheimer que apresentaram mudanças na personalidade
-ctable(x = dados$Diagnosis, y = dados$PersonalityChanges, prop = "r", headings = FALSE)
-
-#----------- -------------------- -------------- ------------- ---------------
-#  PersonalityChanges              0             1           Total
-#Diagnosis                                                                  
-#0                            1172 (84.4%)   217 (15.6%)   1389 (100.0%)
-#1                             653 (85.9%)   107 (14.1%)    760 (100.0%)
-#Total                        1825 (84.9%)   324 (15.1%)   2149 (100.0%)
-#----------- -------------------- -------------- ------------- ---------------
 
 
-# criando tabela com todos os sintomas e verificando a presença de alzheimer
+# criando tabela com todos os sintomas para verificar as frequências em pacientes com e sem alzheimer
 tabela_sintomas <- table(esquecimento = dados$Forgetfulness, reclamações_memória = dados$MemoryComplaints, confusão = dados$Confusion, desorientação = dados$Disorientation, mudança_personalidade = dados$PersonalityChanges, dificuldade_tarefas = dados$DifficultyCompletingTasks, alzheimer = dados$Diagnosis)
 ftable(tabela_sintomas)
-# a partir desta tabela, e analisando somente os diagnosticados com alzheimer, podemos ver que:
 
-# 162 pacientes não apresentaram nenhum dos sintomas 
-# 31 apresentaram somente dificuldade em concluir tarefas
-# 24 tiveram somente mudanças de personalidade
-# 10 tiveram mudanças de personalidade e dificuldade em concluir tarefas
-# 29 apresentaram somente desorientação
-# 10 apresentaram desorientação e outros sintomas (sem reclamações de memória ou esquecimento)
-# 44 apresentaram somente confusão
-# 25 apresentaram confusão e outros sintomas (sem reclamações de memória ou esquecimento)
-
-# 86 tiveram reclamações de memória
-# 110 tiveram reclamações de memória e outros sintomas (sem esquecimento)
-
-# 74 apresentaram esquecimento
-# 65 apresentaram esquecimento e outros sintomas (sem reclamação de memória)
-
-# 51 apresentaram esquecimento e reclamações de memória
-# 39 apresentaram esquecimento, reclamações de memória e outros sintomas
-
-# a partir desses dados, podemos ver que dos 760 pacientes que foram diagnosticados com alzheimer, 162 (21.31%) não apresentaram nenhum dos sintomas e 598 apresentaram 1 ou mais sintomas
-# os sintomas mais frequentes foram esquecimento e reclamações de memória (425 ou 55.92% pacientes apresentaram pelo menos um desses sintomas), enquanto confusão, desorientação, mudanças de personalidade e dificuldade em concluir tarefas foram sintomas que aparecem bastante em conjunto com os dois sintomas principais
-# 173 (22.76%) pacientes apresentaram os sintomas confusão, desorientação, mudanças de personalidade e dificuldade em concluir tarefas (apresentando um ou mais desses sintomas mas sem esquecimento e reclamações de memória)
 
 # verificando se existe associação entre os sintomas e o diagnóstico
 # como são variáveis categóricas, usamos o método qui-quadrado
 
-
 chisq.test(table(dados$Diagnosis, dados$Forgetfulness))
 
 #Pearson's Chi-squared test with Yates' continuity correction
-
 #data:  table(dados$Diagnosis, dados$Forgetfulness)
 #X-squared = 1.2942e-29, df = 1, p-value = 1
-# não há associação entre esquecimento e o diagnóstico de alzheimer
+
 
 chisq.test(table(dados$Diagnosis, dados$MemoryComplaints))
 
 #Pearson's Chi-squared test with Yates' continuity correction
-
 #data:  table(dados$Diagnosis, dados$MemoryComplaints)
 #X-squared = 200.62, df = 1, p-value < 2.2e-16
-# p valor é menor do que 0.05
-# existe associação entre reclamações de memória e diagnóstico
+
 
 chisq.test(table(dados$Diagnosis, dados$Confusion))
 
 #Pearson's Chi-squared test with Yates' continuity correction
-
 #data:  table(dados$Diagnosis, dados$Confusion)
 #X-squared = 0.69479, df = 1, p-value = 0.4045
-# não existe associação entre confusão e diagnóstico
 
 chisq.test(table(dados$Diagnosis, dados$Disorientation))
 
 #Pearson's Chi-squared test with Yates' continuity correction
-
 #data:  table(dados$Diagnosis, dados$Disorientation)
 #X-squared = 1.1681, df = 1, p-value = 0.2798
-# não existe associação entre desorientação e diagnóstico
 
 chisq.test(table(dados$Diagnosis, dados$PersonalityChanges))
 
 #Pearson's Chi-squared test with Yates' continuity correction
-
 #data:  table(dados$Diagnosis, dados$PersonalityChanges)
 #X-squared = 0.79778, df = 1, p-value = 0.3718
-# não existe associação entre mudanças de personalidade e diagnóstico
 
 
 # análise da pontuação do MMSE (mini exame de estado mental pontuações variam de 0 a 30), onde pontuações mais baixas indicam comprometimento cognitivo (diminuição das funçõescognitivas como memória, atenção, raciocínio etc)
-# cálculo média, moda, mediana
+# cálculo das medidas de tendência central
 
 # arredondando os valores e criando uma nova variavel
 dados$mmse_arred <- round(dados$MMSE)
@@ -150,22 +60,6 @@ cat(mediana_mmse_arred)
 moda_mmse_arred <- as.numeric(names(sort(table(dados$mmse_arred), decreasing = TRUE)[1]))
 cat(moda_mmse_arred)
 # 6
-# média e mediana são próximas e moda indica um valor mais baixo
-boxplot(dados$mmse_arred,
-                 main = "Boxplot do MMSE",
-                 ylab = "Pontuação",
-                 col = "lightgreen")
-# o boxplot mostra uma grande variabilidade nas pontuações
-# boxplot comparando pontuações de pacientes com e sem alzheimer
-boxplot(mmse_arred ~ Diagnosis, data = dados,
-                 main = "Pontuação no MMSE",
-                 xlab = "Alzheimer",
-                 ylab = "Pontuação",
-                 col = c("lightcoral", "lightgreen"),
-                 names = c("Não", "Sim"))
-# Podemos ver que pacientes com alzheimer possuem pontuações mais baixas  
-# Pacientes com alzheimer possuem dados assimétricos positivos, mediana está levemente deslocada para baixo
-# a caixa com alzheimer está deslocada para baixo e a caixa sem alzheimer está levemente deslocada para cima
 
 # cálculo medidas de dispersão
 amplitude_mmse_arred <- max(dados$mmse_arred)- min(dados$mmse_arred)
@@ -187,7 +81,7 @@ cat("CV =", round(coef_var_mmse_arred, 2),"%") # 58.37%, alta variabilidade
    normal_curve <-dnorm(x_values,mean= media_mmse_arred,sd= desvio_padrao_mmse_arred)
  #Ajustando o limite superior do eixo y com base no pico da curva normal
    max_density <-max(normal_curve) * 1.2 #Adicionando uma margem de20%
- #Criando um histograma das pontuações
+ #Criando um histograma das pontuações do MMSE
    hist(dados$mmse_arred,
                main= "Histograma da pontuação no MMSE",
                xlab= "Pontuação",
@@ -209,17 +103,24 @@ cat("CV =", round(coef_var_mmse_arred, 2),"%") # 58.37%, alta variabilidade
                    lty= c(1, 2, 2, 2),
                    lwd= 2,
                    bty= "n")
-# pelo histograma podemos ver que as pontuações estão bem distribuídas, já que temos dados de pacientes com e sem alzheimer misturados
 
-
+# boxplot comparando pontuações de pacientes com e sem alzheimer
+boxplot(mmse_arred ~ Diagnosis, data = dados,
+                 main = "Pontuação no MMSE",
+                 xlab = "Alzheimer",
+                 ylab = "Pontuação",
+                 col = c("lightcoral", "lightgreen"),
+                 names = c("Não", "Sim"))
 
 #criando uma amostra estratificada para realizar o teste t para amostras independentes e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
 library(sampling)
 amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
 amostra_final <- getdata(dados, amostra_estratificada)
 library(RVAideMemoire)
+
+# realizando um teste de normalidade
 byf.shapiro(MMSE ~ Diagnosis, amostra_final)
-#Shapiro-Wilk normality tests (p valor é maior do que 0.05, então os dados podem ser considerados como uma distribuição normal)
+#Shapiro-Wilk normality tests 
 
 #data:  MMSE by Diagnosis 
 #       W p-value  
@@ -228,8 +129,12 @@ byf.shapiro(MMSE ~ Diagnosis, amostra_final)
 #---
 #  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+# traduzindo 0 e 1 do diagnóstico em variáveis nominais para realizar o teste de levene
+# obs: sem a realização deste passo o teste não estava funcionando
 amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
 library(car)
+
+# realizando um teste de homogeneidade
 leveneTest(MMSE ~ alzheimer, amostra_final, center=mean)
 #      Df F value  Pr(>F)  
 #group  1  3.3875 0.07528 .
@@ -237,8 +142,9 @@ leveneTest(MMSE ~ alzheimer, amostra_final, center=mean)
 #---
 #  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
+# realizando o teste t
 t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
-#Welch Two Sample t-test (p valor é maior do que 0.05, logo hipótese nula não é rejeitada, não há diferenças significativas entre as médias das pontuações
+#Welch Two Sample t-test 
 
 #data:  MMSE by Diagnosis
 #t = 0.78549, df = 30.858, p-value = 0.4382
@@ -249,11 +155,7 @@ t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 #  mean in group 0 mean in group 1 
 #15.43867        13.02497
 
-# não podemos afirmar que pacientes com alzheimer aprentam menores pontuações de MMSE (comprometimento cognitivo), pois não há diferenças significativas nas médias das pontuações
-# existem pacientes que tiveram pontuações mais baixas e não possuem alzheimer, pois o resultado do teste pode ter tido influência de outros fatores
-boxplot(MMSE ~ Diagnosis, data = amostra_final, ylab="Pontuação MMSE",
-         xlab="Alzheimer")
-# gráfico
+# gerando o gráfico da distribuição t de student
 boxplot(MMSE ~ Diagnosis, data = amostra_final, ylab="Pontuação MMSE",
         xlab="Alzheimer")
 resultado_t <- t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
@@ -276,6 +178,8 @@ text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", po
 text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
 
 # calculo medidas para ADL (Escore de Atividades de Vida Diária, variando de 0 a 10. Pontuações mais baixas indicam maior comprometimento)
+
+# cálculos das medidas de tendência central
 # arredondando os valores e criando uma nova variavel
 dados$adl_arred <- round(dados$ADL)
 
@@ -291,11 +195,7 @@ moda_adl_arred <- as.numeric(names(sort(table(dados$adl_arred), decreasing = TRU
 cat(moda_adl_arred)
 # 9
 
-boxplot(dados$adl_arred,
-                 main = "Boxplot do ADL",
-                 ylab = "Pontuação",
-                 col = "lightgreen")
-
+# cálculos das medidas de dispersão
 amplitude_adl_arred <- max(dados$adl_arred)- min(dados$adl_arred)
 cat(amplitude_adl_arred)
 # 10
@@ -310,22 +210,13 @@ coef_var_adl_arred <- (desvio_padrao_adl_arred / media_adl_arred)*100
 cat("CV =", round(coef_var_adl_arred, 2),"%")
 # CV = 60.01 %
 
-# boxplot comparando pontuações de pacientes com e sem alzheimer
-boxplot(adl_arred ~ Diagnosis, data = dados,
-        main = "Pontuação no ADL",
-        xlab = "Alzheimer",
-        ylab = "Pontuação",
-        col = c("lightcoral", "lightgreen"),
-        names = c("Não", "Sim"))
-# pacientes sem alzheimer apresentam pontuações maiores (menor comprometimento)
-
 #Criando um vetor de valores para o eixox
 x_values2<-seq(min(dados$adl_arred),max(dados$adl_arred),length=2149)
 #Calculando a densidade da distribuição normal com média e desvio padrão dos dados
 normal_curve2 <-dnorm(x_values2,mean= media_adl_arred,sd= desvio_padrao_adl_arred)
 #Ajustando o limite superior do eixo y com base no pico da curva normal
 max_density2 <-max(normal_curve2) * 1.2 #Adicionando uma margem de20%
-#Criando um histograma das pontuações
+#Criando um histograma das pontuações do ADL
 hist(dados$adl_arred,
      main= "Histograma da pontuação ADL",
      xlab= "Pontuação",
@@ -347,29 +238,43 @@ legend("topright",
        lty= c(1, 2, 2, 2),
        lwd= 2,
        bty= "n")
-# pontuações estão bem distribuídas porque temos pacientes com e sem alzheimer misturados
+
+# boxplot comparando pontuações de pacientes com e sem alzheimer
+boxplot(adl_arred ~ Diagnosis, data = dados,
+        main = "Pontuação no ADL",
+        xlab = "Alzheimer",
+        ylab = "Pontuação",
+        col = c("lightcoral", "lightgreen"),
+        names = c("Não", "Sim"))
+
 
 # criando uma amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do ADL
 amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
 amostra_final <- getdata(dados, amostra_estratificada)
+
+# realizando o teste de normalidade
 byf.shapiro(ADL ~ Diagnosis, amostra_final)
-#	Shapiro-Wilk normality tests (se p valor for maior que 0.05, significa que os dados podem ser considerados com distribuição normal)
+#	Shapiro-Wilk normality tests 
 
 #data:  ADL by Diagnosis 
 #W p-value
 #0 0.9323  0.1708
 #1 0.9075  0.1697
 
+# traduzindo 0 e 1 do diagnóstico em variáveis nominais para realizar o teste de levene
+# obs: sem a realização deste passo o teste não estava funcionando
 amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
+
+# realizando o teste de homogeneidade
 leveneTest(ADL ~ alzheimer, amostra_final, center=mean)
 #Levene's Test for Homogeneity of Variance (center = mean)
 #      Df F value Pr(>F)
 #group  1   6e-04 0.9807
 #      26 
 
+# realizando teste t
 t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
-#Welch Two Sample t-test (p valor é menor do que 0.05, então hipótese alternativa é aceita, existem diferenças significativas entre as médias)
-
+#Welch Two Sample t-test 
 #data:  ADL by Diagnosis
 #data:  ADL by Diagnosis
 #t = 2.196, df = 22.601, p-value = 0.03863
@@ -380,11 +285,8 @@ t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
 #  mean in group 0 mean in group 1 
 #6.045988        3.906610
 
-# A presença de Alzheimer influencia na pontuação do ADL, pacientes sem alzheimer tiverem pontuações mais altas do que pacientes com alzheimer
-# pacientes com alzheimer apresentam maior comprometimento/dificuldade ao realizar atividades diárias
-boxplot(ADL ~ Diagnosis, data = amostra_final, ylab="Pontuação ADL",
-                 xlab="Alzheimer")
-# distribuição t de student
+
+# gerando o gráfico da distribuição t de student
 boxplot(ADL ~ Diagnosis, data = amostra_final, ylab="Pontuação ADL",
                           xlab="Alzheimer")
 resultado_t <- t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
