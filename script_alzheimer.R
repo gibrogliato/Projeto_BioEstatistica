@@ -247,7 +247,34 @@ abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
 text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
 text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
 
+
+
 # analises das pontuações Functional Assessment
+# calculos das medidas de tendência central
+media_functA_arred <- mean(dados$functionalAssessment_arred)
+cat(media_functA_arred)
+# 5.085156
+
+mediana_functA_arred <- median(dados$functionalAssessment_arred)
+cat(mediana_functA_arred)
+# 5
+moda_functA_arred <- as.numeric(names(sort(table(dados$functionalAssessment_arred), decreasing = TRUE)[1]))
+cat(moda_functA_arred)
+# 9
+
+# cálculo medidas de dispersão
+amplitude_functA_arred <- max(dados$functionalAssessment_arred)- min(dados$functionalAssessment_arred)
+cat(amplitude_functA_arred)
+# 10
+
+desvio_padrao_functA_arred <- sd(dados$functionalAssessment_arred)
+variancia_functA_arred <- var(dados$functionalAssessment_arred)
+cat(variancia_functA_arred) # 8.607736
+cat(desvio_padrao_functA_arred) # 2.933894
+
+coef_var_functA_arred <- (desvio_padrao_functA_arred / media_functA_arred)*100
+cat("CV =", round(coef_var_functA_arred, 2),"%") # CV = 57.7 %
+
 
 # gerando um boxplot das pontuações
 boxplot(FunctionalAssessment ~ Diagnosis, data = dados,
