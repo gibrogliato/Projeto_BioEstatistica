@@ -2,7 +2,26 @@
 # abrindo o banco de dados
 dados <- read.csv('alzheimers_disease_data.csv')
 
+# verificando a frequência do histórico familiar de alzheimer
+ctable(x = dados$Diagnosis, y = dados$FamilyHistoryAlzheimers, prop = "r", headings = FALSE)
 
+#----------- ------------------------- -------------- ------------- ---------------
+#  FamilyHistoryAlzheimers              0             1           Total
+#Diagnosis                                                                       
+#0                             1024 (73.7%)   365 (26.3%)   1389 (100.0%)
+#1                              583 (76.7%)   177 (23.3%)    760 (100.0%)
+#Total                             1607 (74.8%)   542 (25.2%)   2149 (100.0%)
+#----------- ------------------------- -------------- ------------- ---------------
+
+# realizando um qui-quadrado para verificar se o histórico familiar tem relação com o alzheimer
+chisq.test(table(dados$Diagnosis, dados$FamilyHistoryAlzheimers))
+
+#Pearson's Chi-squared test with Yates' continuity correction
+
+#data:  table(dados$Diagnosis, dados$FamilyHistoryAlzheimers)
+#X-squared = 2.1703, df = 1, p-value = 0.1407
+
+# análises dos sintomas
 # criando tabela com todos os sintomas para verificar as frequências em pacientes com e sem alzheimer
 tabela_sintomas <- table(esquecimento = dados$Forgetfulness, reclamações_memória = dados$MemoryComplaints, confusão = dados$Confusion, desorientação = dados$Disorientation, mudança_personalidade = dados$PersonalityChanges, dificuldade_tarefas = dados$DifficultyCompletingTasks, alzheimer = dados$Diagnosis)
 ftable(tabela_sintomas)
