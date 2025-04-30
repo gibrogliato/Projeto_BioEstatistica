@@ -85,7 +85,7 @@ boxplot(mmse_arred ~ Diagnosis, data = dados,
 
 #criando uma amostra estratificada para realizar o teste t para amostras independentes e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
 library(sampling)
-amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
+amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 30, "1" = 8), method = "srswor")
 amostra_final <- getdata(dados, amostra_estratificada)
 library(RVAideMemoire)
 
@@ -94,9 +94,9 @@ byf.shapiro(MMSE ~ Diagnosis, amostra_final)
 #Shapiro-Wilk normality tests 
 
 #data:  MMSE by Diagnosis 
-#       W p-value  
-#0 0.9105 0.06503 .
-#1 0.9010 0.13805  
+#       W p-value    
+#0 0.9402 0.09229 .
+#1 0.9417 0.62754  
 #---
 #  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
@@ -108,23 +108,21 @@ library(car)
 # realizando um teste de homogeneidade
 leveneTest(MMSE ~ alzheimer, amostra_final, center=mean)
 #      Df F value  Pr(>F)  
-#group  1  3.3875 0.07528 .
-#     31                  
-#---
-#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#group  1  0.0579 0.8112
+#      36 
 
 # realizando o teste t
 t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
 #Welch Two Sample t-test 
 
 #data:  MMSE by Diagnosis
-#t = 0.78549, df = 30.858, p-value = 0.4382
+#t = 1.434, df = 10.397, p-value = 0.181
 #alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 #95 percent confidence interval:
-#  -3.854578  8.681993
+#  -2.197179 10.248415
 #sample estimates:
 #  mean in group 0 mean in group 1 
-#15.43867        13.02497
+#19.25132        15.22571
 
 # gerando o gráfico da distribuição t de student
 resultado_t <- t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
@@ -189,42 +187,36 @@ boxplot(adl_arred ~ Diagnosis, data = dados,
         names = c("Não", "Sim"))
 
 
-# criando uma amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do ADL
-amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 20, "1" = 13), method = "srswor")
-amostra_final <- getdata(dados, amostra_estratificada)
+# utilizando a amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do ADL
+
 
 # realizando o teste de normalidade
 byf.shapiro(ADL ~ Diagnosis, amostra_final)
 #	Shapiro-Wilk normality tests 
-
 #data:  ADL by Diagnosis 
 #W p-value
-#0 0.9323  0.1708
-#1 0.9075  0.1697
+#0 0.9668  0.4555
+#1 0.9505  0.7167
 
-# traduzindo 0 e 1 do diagnóstico em variáveis nominais para realizar o teste de levene
-# obs: sem a realização deste passo o teste não estava funcionando
-amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
 
 # realizando o teste de homogeneidade
 leveneTest(ADL ~ alzheimer, amostra_final, center=mean)
 #Levene's Test for Homogeneity of Variance (center = mean)
 #      Df F value Pr(>F)
-#group  1   6e-04 0.9807
-#      26 
+#group  1  1.1286 0.2952
+#       36 
 
 # realizando teste t
 t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
 #Welch Two Sample t-test 
 #data:  ADL by Diagnosis
-#data:  ADL by Diagnosis
-#t = 2.196, df = 22.601, p-value = 0.03863
+#t = 6.3194, df = 15.129, p-value = 1.322e-05
 #alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 #95 percent confidence interval:
-#  0.1220627 4.1566942
+#  2.847304 5.742348
 #sample estimates:
 #  mean in group 0 mean in group 1 
-#6.045988        3.906610
+#6.434223        2.139396
 
 
 # gerando o gráfico da distribuição t de student
@@ -233,7 +225,7 @@ t_obs <- resultado_t$statistic
 gl <- resultado_t$parameter
 alpha <- 0.05
 t_crit <- qt(1- alpha/2, df = gl)
-x <- seq(-4, 4, length = 200)
+x <- seq(-7, 7, length = 200)
 y <- dt(x, df = gl)
 plot(x, y, type = "l", lwd = 2, col = "black",
                      main = "Distribuição t de Student — Pontuação ADL",
@@ -284,33 +276,23 @@ boxplot(FunctionalAssessment ~ Diagnosis, data = dados,
                  col = c("lightcoral", "lightgreen"),
                  names = c("Não", "Sim"))
 
-# criando uma amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do Functional Assessment
-amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 18, "1" = 10), method = "srswor")
-amostra_final <- getdata(dados, amostra_estratificada)
+# utilizando a amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do Functional Assessment
 
 # realizando teste de normalidade
 byf.shapiro(FunctionalAssessment ~ Diagnosis, amostra_final)
-
 #Shapiro-Wilk normality tests
 #data:  FunctionalAssessment by Diagnosis 
-
 #W p-value
-#0 0.9140  0.1014
-#1 0.8841  0.1454
+#0 0.9481  0.1501
+#1 0.9153  0.3932
 
-
-# traduzindo 0 e 1 do diagnóstico em variáveis nominais para realizar o teste de levene
-# obs: sem a realização deste passo o teste não estava funcionando
-amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
 
 # realizando teste de homogeneidade
 leveneTest(FunctionalAssessment ~ alzheimer, amostra_final, center=mean)
 #Levene's Test for Homogeneity of Variance (center = mean)
 #      Df F value  Pr(>F)  
-#group  1  3.4766 0.07357 .
-#      26                  
-#---
-#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#group  1  0.0838 0.7739
+#      36 
 
 
 # executando teste t
@@ -319,13 +301,13 @@ t.test(FunctionalAssessment ~ Diagnosis, amostra_final, var.equal=FALSE)
 #	Welch Two Sample t-test
 
 #data:  FunctionalAssessment by Diagnosis
-#t = 4.3508, df = 25.981, p-value = 0.0001867
+#t = 5.9423, df = 22.127, p-value = 5.448e-06
 #alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 #95 percent confidence interval:
-# 1.836557 5.126260
+#  2.593886 5.373670
 #sample estimates:
-#mean in group 0 mean in group 1 
-#       6.397918        2.916510
+#  mean in group 0 mean in group 1 
+#6.120583        2.136804 
 
 
 # gerando gráfico da distribuição t de student       
@@ -334,7 +316,7 @@ t_obs <- resultado_t$statistic
 gl <- resultado_t$parameter
 alpha <- 0.05
 t_crit <- qt(1- alpha/2, df = gl)
-x <- seq(-5, 5, length = 200)
+x <- seq(-6, 6, length = 200)
 y <- dt(x, df = gl)
 plot(x, y, type = "l", lwd = 2, col = "black",
              main = "Distribuição t de Student — Pontuação Functional Assessment",
