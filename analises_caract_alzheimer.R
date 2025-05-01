@@ -1,4 +1,8 @@
-# análises das frequências dos sintomas e medidas das pontuações de MMSE e ADL. obs: ainda falta analiser os resultados das medidas
+# Alice Fernanda Oliveira Mercado, Breno Dias Besenbruch Caruso, Giovanna de Oliveira Brogliato, Larissa Hikaru Watanabe, Tiffany Guimarães Müller de Souza Soderi 
+# data de criação:
+# bibliotecas utilizadas:summarytools, sampling, RVAideMemoire, car, dplyr
+
+# análises do histórico familiar, frequências dos sintomas, frequência de problemas comportamentais e medidas das pontuações de MMSE e ADL. 
 # abrindo o banco de dados
 dados <- read.csv('alzheimers_disease_data.csv')
 
