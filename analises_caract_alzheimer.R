@@ -1,6 +1,6 @@
 # Alice Fernanda Oliveira Mercado, Breno Dias Besenbruch Caruso, Giovanna de Oliveira Brogliato, Larissa Hikaru Watanabe, Tiffany Guimarães Müller de Souza Soderi 
 # data de criação: 30/03/2025
-# bibliotecas utilizadas:summarytools, sampling, RVAideMemoire, car, dplyr
+# bibliotecas utilizadas:summarytools, sampling, RVAideMemoire, car, dplyr, effectsize
 
 # análises do histórico familiar, frequências dos sintomas, frequência de problemas comportamentais e medidas das pontuações de MMSE e ADL. 
 # abrindo o banco de dados
@@ -126,66 +126,30 @@ boxplot(mmse_arred ~ Diagnosis, data = dados,
                  col = c("lightcoral", "lightgreen"),
                  names = c("Não", "Sim"))
 
-#criando uma amostra estratificada para realizar o teste t para amostras independentes e verificar se a presença de alzheimer influencia nas pontuações do teste MMSE
-library(sampling)
-amostra_estratificada <- strata(dados, stratanames = "Diagnosis", size = c("0" = 30, "1" = 8), method = "srswor")
-amostra_final <- getdata(dados, amostra_estratificada)
-library(RVAideMemoire)
 
-# realizando um teste de normalidade
-byf.shapiro(MMSE ~ Diagnosis, amostra_final)
-#Shapiro-Wilk normality tests 
 
-#data:  MMSE by Diagnosis 
-#       W p-value    
-#0 0.9402 0.09229 .
-#1 0.9417 0.62754  
-#---
-#  Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# calculando teste t para duas amostras independentes
+t.test(MMSE ~ Diagnosis, dados, var.equal=FALSE)
 
-# traduzindo 0 e 1 do diagnóstico em variáveis nominais para realizar o teste de levene
-# obs: sem a realização deste passo o teste não estava funcionando
-amostra_final$alzheimer <- ifelse(amostra_final$Diagnosis == 0, "não", "sim")
-library(car)
-
-# realizando um teste de homogeneidade
-leveneTest(MMSE ~ alzheimer, amostra_final, center=mean)
-#      Df F value  Pr(>F)  
-#group  1  0.0579 0.8112
-#      36 
-
-# realizando o teste t
-t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
-#Welch Two Sample t-test 
+#	Welch Two Sample t-test
 
 #data:  MMSE by Diagnosis
-#t = 1.434, df = 10.397, p-value = 0.181
+#t = 12.025, df = 1851.4, p-value < 2.2e-16
 #alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 #95 percent confidence interval:
-#  -2.197179 10.248415
+# 3.574302 4.967469
 #sample estimates:
-#  mean in group 0 mean in group 1 
-#19.25132        15.22571
+#mean in group 0 mean in group 1 
+#       16.26554        11.99466
 
-# gerando o gráfico da distribuição t de student
-resultado_t <- t.test(MMSE ~ Diagnosis, amostra_final, var.equal=FALSE)
-t_obs <- resultado_t$statistic
-gl <- resultado_t$parameter
-alpha <- 0.05
-t_crit <- qt(1- alpha/2, df = gl)
-x <- seq(-4, 4, length = 200)
-y <- dt(x, df = gl)
-plot(x, y, type = "l", lwd = 2, col = "black",
-     main = "Distribuição t de Student — Pontuação MMSE",
-     ylab = "Densidade", xlab = "Valor t")
-polygon(c(x[x <=-t_crit],-t_crit), c(y[x <=-t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
-polygon(c(x[x >= t_crit], t_crit), c(y[x >= t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
-abline(v = t_obs, col = "blue", lwd = 2, lty = 2)
-text(t_obs, dt(t_obs, df = gl) + 0.01,
-     paste0("t calculado = ", round(t_obs, 2)), col = "blue", pos = 4, cex = 0.9)
-abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
-text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
-text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
+# calculando Cohen's d
+t_test_result <- t.test(dados$MMSE ~ dados$Diagnosis)
+cohens_d(t_test_result)
+#Cohen's d |       95% CI
+#------------------------
+#0.53      | [0.44, 0.61]
+
+#- Estimated using un-pooled SD.
 
 # calculo medidas para ADL (Escore de Atividades de Vida Diária, variando de 0 a 10. Pontuações mais baixas indicam maior comprometimento)
 
@@ -230,55 +194,25 @@ boxplot(adl_arred ~ Diagnosis, data = dados,
         names = c("Não", "Sim"))
 
 
-# utilizando a amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do ADL
+# realizando teste t para duas amostras independentes
+t.test(ADL ~ Diagnosis, dados, var.equal=FALSE)
 
+#	Welch Two Sample t-test
 
-# realizando o teste de normalidade
-byf.shapiro(ADL ~ Diagnosis, amostra_final)
-#	Shapiro-Wilk normality tests 
-#data:  ADL by Diagnosis 
-#W p-value
-#0 0.9668  0.4555
-#1 0.9505  0.7167
-
-
-# realizando o teste de homogeneidade
-leveneTest(ADL ~ alzheimer, amostra_final, center=mean)
-#Levene's Test for Homogeneity of Variance (center = mean)
-#      Df F value Pr(>F)
-#group  1  1.1286 0.2952
-#       36 
-
-# realizando teste t
-t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
-#Welch Two Sample t-test 
 #data:  ADL by Diagnosis
-#t = 6.3194, df = 15.129, p-value = 1.322e-05
+#t = 16.546, df = 1622.6, p-value < 2.2e-16
 #alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 #95 percent confidence interval:
-#  2.847304 5.742348
+# 1.807000 2.293026
 #sample estimates:
-#  mean in group 0 mean in group 1 
-#6.434223        2.139396
+#mean in group 0 mean in group 1 
+#       5.707951        3.657938
 
+# calculando cohen's d
+t_test_result2 <- t.test(dados$ADL ~ dados$Diagnosis)
+cohens_d(t_test_result2)
+#Cohen's d |       95% CI
+#------------------------
+#0.74      | [0.65, 0.83]
 
-# gerando o gráfico da distribuição t de student
-resultado_t <- t.test(ADL ~ Diagnosis, amostra_final, var.equal=FALSE)
-t_obs <- resultado_t$statistic
-gl <- resultado_t$parameter
-alpha <- 0.05
-t_crit <- qt(1- alpha/2, df = gl)
-x <- seq(-7, 7, length = 200)
-y <- dt(x, df = gl)
-plot(x, y, type = "l", lwd = 2, col = "black",
-                     main = "Distribuição t de Student — Pontuação ADL",
-                     ylab = "Densidade", xlab = "Valor t")
-polygon(c(x[x <=-t_crit],-t_crit), c(y[x <=-t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
-polygon(c(x[x >= t_crit], t_crit), c(y[x >= t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
-abline(v = t_obs, col = "blue", lwd = 2, lty = 2)
-text(t_obs, dt(t_obs, df = gl) + 0.01,
-                     paste0("t calculado = ", round(t_obs, 2)), col = "blue", pos = 4, cex = 0.9)
-abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
-text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
-text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
-
+#- Estimated using un-pooled SD.
