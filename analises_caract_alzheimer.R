@@ -1,5 +1,5 @@
 # Alice Fernanda Oliveira Mercado, Breno Dias Besenbruch Caruso, Giovanna de Oliveira Brogliato, Larissa Hikaru Watanabe, Tiffany Guimarães Müller de Souza Soderi 
-# data de criação:
+# data de criação: 30/03/2025
 # bibliotecas utilizadas:summarytools, sampling, RVAideMemoire, car, dplyr
 
 # análises do histórico familiar, frequências dos sintomas, frequência de problemas comportamentais e medidas das pontuações de MMSE e ADL. 
