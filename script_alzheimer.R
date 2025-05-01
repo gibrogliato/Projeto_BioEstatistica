@@ -63,6 +63,26 @@ chisq.test(table(dados$Diagnosis, dados$PersonalityChanges))
 #X-squared = 0.79778, df = 1, p-value = 0.3718
 
 
+# criando uma tabela de frequência para os problemas comportamentais em pessoas com e sem Alzheimer
+ctable(x = dados$Diagnosis, y = dados$BehavioralProblems, prop = "r", headings = FALSE)
+
+#----------- -------------------- -------------- ------------- ---------------
+#              BehavioralProblems              0             1           Total
+#  Diagnosis                                                                  
+#          0                        1255 (90.4%)   134 ( 9.6%)   1389 (100.0%)
+#          1                         557 (73.3%)   203 (26.7%)    760 (100.0%)
+#      Total                        1812 (84.3%)   337 (15.7%)   2149 (100.0%)
+#----------- -------------------- -------------- ------------- ---------------
+
+# teste qui-quadrado para verificar se problemas comportamentais possuem relação com o Alzheimer
+chisq.test(table(dados$Diagnosis, dados$BehavioralProblems))
+
+#	Pearson's Chi-squared test with Yates' continuity correction
+
+#data:  table(dados$Diagnosis, dados$BehavioralProblems)
+#X-squared = 106.88, df = 1, p-value < 2.2e-16
+
+
 # análise da pontuação do MMSE (mini exame de estado mental pontuações variam de 0 a 30), onde pontuações mais baixas indicam comprometimento cognitivo (diminuição das funçõescognitivas como memória, atenção, raciocínio etc)
 # cálculo das medidas de tendência central
 
@@ -258,93 +278,3 @@ abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
 text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
 text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
 
-
-
-# analises das pontuações Functional Assessment
-# calculos das medidas de tendência central
-media_functA_arred <- mean(dados$functionalAssessment_arred)
-cat(media_functA_arred)
-# 5.085156
-
-mediana_functA_arred <- median(dados$functionalAssessment_arred)
-cat(mediana_functA_arred)
-# 5
-moda_functA_arred <- as.numeric(names(sort(table(dados$functionalAssessment_arred), decreasing = TRUE)[1]))
-cat(moda_functA_arred)
-# 9
-
-# cálculo medidas de dispersão
-amplitude_functA_arred <- max(dados$functionalAssessment_arred)- min(dados$functionalAssessment_arred)
-cat(amplitude_functA_arred)
-# 10
-
-desvio_padrao_functA_arred <- sd(dados$functionalAssessment_arred)
-variancia_functA_arred <- var(dados$functionalAssessment_arred)
-cat(variancia_functA_arred) # 8.607736
-cat(desvio_padrao_functA_arred) # 2.933894
-
-coef_var_functA_arred <- (desvio_padrao_functA_arred / media_functA_arred)*100
-cat("CV =", round(coef_var_functA_arred, 2),"%") # CV = 57.7 %
-
-
-# gerando um boxplot das pontuações
-boxplot(FunctionalAssessment ~ Diagnosis, data = dados,
-                 main = "Pontuação no Functional Assessment",
-                 xlab = "Alzheimer",
-                 ylab = "Pontuação",
-                 col = c("lightcoral", "lightgreen"),
-                 names = c("Não", "Sim"))
-
-# utilizando a amostra estratificada e realizando teste t para amostras independentes para verificar se a presença de alzheimer influencia na pontuação do Functional Assessment
-
-# realizando teste de normalidade
-byf.shapiro(FunctionalAssessment ~ Diagnosis, amostra_final)
-#Shapiro-Wilk normality tests
-#data:  FunctionalAssessment by Diagnosis 
-#W p-value
-#0 0.9481  0.1501
-#1 0.9153  0.3932
-
-
-# realizando teste de homogeneidade
-leveneTest(FunctionalAssessment ~ alzheimer, amostra_final, center=mean)
-#Levene's Test for Homogeneity of Variance (center = mean)
-#      Df F value  Pr(>F)  
-#group  1  0.0838 0.7739
-#      36 
-
-
-# executando teste t
-t.test(FunctionalAssessment ~ Diagnosis, amostra_final, var.equal=FALSE)
-
-#	Welch Two Sample t-test
-
-#data:  FunctionalAssessment by Diagnosis
-#t = 5.9423, df = 22.127, p-value = 5.448e-06
-#alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
-#95 percent confidence interval:
-#  2.593886 5.373670
-#sample estimates:
-#  mean in group 0 mean in group 1 
-#6.120583        2.136804 
-
-
-# gerando gráfico da distribuição t de student       
-resultado_t <- t.test(FunctionalAssessment ~ Diagnosis, amostra_final, var.equal=FALSE)
-t_obs <- resultado_t$statistic
-gl <- resultado_t$parameter
-alpha <- 0.05
-t_crit <- qt(1- alpha/2, df = gl)
-x <- seq(-6, 6, length = 200)
-y <- dt(x, df = gl)
-plot(x, y, type = "l", lwd = 2, col = "black",
-             main = "Distribuição t de Student — Pontuação Functional Assessment",
-             ylab = "Densidade", xlab = "Valor t")
-polygon(c(x[x <=-t_crit],-t_crit), c(y[x <=-t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
-polygon(c(x[x >= t_crit], t_crit), c(y[x >= t_crit], 0), col = rgb(1, 0, 0, 0.3), border = NA)
-abline(v = t_obs, col = "blue", lwd = 2, lty = 2)
-text(t_obs, dt(t_obs, df = gl) + 0.01,
-             paste0("t calculado = ", round(t_obs, 2)), col = "blue", pos = 4, cex = 0.9)
-abline(v = c(-t_crit, t_crit), col = "red", lty = 3, lwd = 2)
-text(-t_crit, 0.03, paste0("-t crítico = ", round(-t_crit, 2)), col = "red", pos = 2, cex = 0.9)
-text(t_crit, 0.03, paste0("t crítico = ", round(t_crit, 2)), col = "red", pos = 4, cex = 0.9)
