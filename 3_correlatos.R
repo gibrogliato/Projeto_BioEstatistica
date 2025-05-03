@@ -15,7 +15,7 @@
 
 # 1. '1_analise_descritiva.R'
 # 2. '2_plot_histogramas.R'
-# 2. '3_correlatos.R'
+# 3. '3_correlatos.R'
 # '---------------------------------------------------------'
 
 
