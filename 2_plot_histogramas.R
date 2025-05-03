@@ -12,12 +12,12 @@
 # Data de Criação: 27 de março de 2025
 
 # Ordem de Execução:
-# *Importante:* O script 'plot_histogramas.R' depende de objetos (médias, medianas, etc) criados pelo script 'analise_descritiva.R'.
+# *Importante:* O script '2_plot_histogramas.R' depende de objetos (médias, medianas, etc) criados pelo script '1_analise_descritiva.R'.
 
 # Execute os scripts na seguinte ordem:
 
-# 1. 'analise_descritiva.R'
-# 2. 'plot_histogramas.R'
+# 1. '1_analise_descritiva.R'
+# 2. '2_plot_histogramas.R'
 # '---------------------------------------------------------'
 
 
