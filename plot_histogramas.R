@@ -1,3 +1,25 @@
+# Descrição do Script:
+# Utiliza os objetos criados em 'analise_descritiva.R' para gerar histogramas com curvas normais 
+# sobrepostas para idade, BMI, consumo de álcool, atividade física e para qualidade do sono.
+
+# Integrantes do Grupo:
+# Alice Fernanda Oliveira Mercado (RA: 11202022127)
+# Breno Dias Besenbruch Caruso (RA: 11202231651)
+# Giovanna de Oliveira Brogliato (RA: 11202230923)
+# Larissa Hikaru Watanabe (RA: 11202320482)
+# Tiffany Guimarães Müller de Souza Soderi (RA: 11202130384)
+
+# Data de Criação: 27 de março de 2025
+
+# Ordem de Execução:
+# *Importante:* O script 'plot_histogramas.R' depende de objetos (médias, medianas, etc) criados pelo script 'analise_descritiva.R'.
+
+# Execute os scripts na seguinte ordem:
+
+# 1. 'analise_descritiva.R'
+# 2. 'plot_histogramas.R'
+# '---------------------------------------------------------'
+
 
 #Agora com os dados de 'analise_descritiva.R' em maõs, vamos plotar os histogramas
 #e suas curvas para os valores de 1)idade, 2) BMI, 3) consumo de álcool,
