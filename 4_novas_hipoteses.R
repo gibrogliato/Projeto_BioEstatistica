@@ -1,5 +1,27 @@
-#Agora entendendo que algumas variáveis podem ter correlações, vamos propor hipóteses.
+# Descrição do Script:
+# Esse script realiza testes de hipóteses (usando ANOVA) para verificar se existem diferenças significativas
+# nas médias de diversas métricas de saúde (doenças cardiovasculares, diabetes, colesterol, etc) 
+# entre pacientes com e sem diagnóstico de Alzheimer.
 
+# Integrantes do Grupo:
+# Alice Fernanda Oliveira Mercado (RA: 11202022127)
+# Breno Dias Besenbruch Caruso (RA: 11202231651)
+# Giovanna de Oliveira Brogliato (RA: 11202230923)
+# Larissa Hikaru Watanabe (RA: 11202320482)
+# Tiffany Guimarães Müller de Souza Soderi (RA: 11202130384)
+
+# Data de Criação: 16 de abril de 2025
+
+# Ordem de Execução:
+# Execute os scripts na seguinte ordem:
+
+# 1. '1_analise_descritiva.R'
+# 2. '2_plot_histogramas.R'
+# 3. '3_correlatos.R'
+# 4. '4_novas_hipoteses'
+# '---------------------------------------------------------'
+
+#Agora entendendo que algumas variáveis podem ter correlações, vamos propor hipóteses.
 #Verificando componentes do teste
 # Teste F para comparar as variâncias entre duas variáveis contínuas
 #Para esses testes vamos assumir a H0 de que as variâncias são iguais e H1 de que não são iguais
