@@ -1,3 +1,23 @@
+# Descrição do Script:
+# Esse script calcula a correlação de Pearson entre um conjunto selecionado de variáveis (Age, Gender, BMI, etc.) e a variável Diagnosis.
+
+# Integrantes do Grupo:
+# Alice Fernanda Oliveira Mercado (RA: 11202022127)
+# Breno Dias Besenbruch Caruso (RA: 11202231651)
+# Giovanna de Oliveira Brogliato (RA: 11202230923)
+# Larissa Hikaru Watanabe (RA: 11202320482)
+# Tiffany Guimarães Müller de Souza Soderi (RA: 11202130384)
+
+# Data de Criação: 14 de abril de 2025
+
+# Ordem de Execução:
+# Execute os scripts na seguinte ordem:
+
+# 1. '1_analise_descritiva.R'
+# 2. '2_plot_histogramas.R'
+# 2. '3_correlatos.R'
+# '---------------------------------------------------------'
+
 
 #Vamos estudar as correlações possíveis nas variáveis que analisamos antes. 
 #Variáveis: idade, gênero, IMC, atividade física, qualidade de sono e consumo de álcool. 
