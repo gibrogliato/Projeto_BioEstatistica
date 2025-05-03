@@ -1,3 +1,17 @@
+# Descrição do Script:
+# Este script realiza uma análise descritiva e exploratória das variáveis consideradas relevantes 
+# no contexto do estudo sobre a Doença de Alzheimer, com o objetivo de identificar padrões, 
+# tendências e possíveis relações entre os dados coletados.
+
+# Integrantes do Grupo:
+# Alice Fernanda Oliveira Mercado (RA: 11202022127)
+# Breno Dias Besenbruch Caruso (RA: 11202231651)
+# Giovanna de Oliveira Brogliato (RA: 11202230923)
+# Larissa Hikaru Watanabe (RA: 11202320482)
+# Tiffany Guimarães Müller de Souza Soderi (RA: 11202130384)
+
+# Data de Criação: 27 de março de 2025
+# '---------------------------------------------------------'
 
 #Fazendo a Análise Desciritiva dos dados
 
