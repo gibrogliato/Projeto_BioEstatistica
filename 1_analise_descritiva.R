@@ -11,11 +11,16 @@
 # Tiffany Guimarães Müller de Souza Soderi (RA: 11202130384)
 
 # Data de Criação: 27 de março de 2025
+
+# Instalação de pacotes:
+# Requer readr
+install.packages("readr")
 # '---------------------------------------------------------'
 
-#Fazendo a Análise Desciritiva dos dados
+#Fazendo a Análise Descritiva dos dados
 
-dados_alzheimer <- read.csv('alzheimers_disease_data.csv')
+library(readr)
+dados_alzheimer <- read_csv("~/Projeto_BioEstatistica-main/alzheimers_disease_data.csv")
 str(dados_alzheimer)  # Estrutura dos dados
 head(dados_alzheimer)  # Primeiras linhas
 summary(dados_alzheimer)  # Estatísticas resumidas
