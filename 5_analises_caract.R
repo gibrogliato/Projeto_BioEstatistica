@@ -1,10 +1,37 @@
-# Alice Fernanda Oliveira Mercado, Breno Dias Besenbruch Caruso, Giovanna de Oliveira Brogliato, Larissa Hikaru Watanabe, Tiffany Guimarães Müller de Souza Soderi 
-# data de criação: 30/03/2025
-# bibliotecas utilizadas:summarytools, sampling, RVAideMemoire, car, dplyr, effectsize
 
-# análises do histórico familiar, frequências dos sintomas, frequência de problemas comportamentais e medidas das pontuações de MMSE e ADL. 
+# Descrição do Script:
+# Este código R utiliza testes qui-quadrado para verificar a associação estatística entre o diagnóstico de Alzheimer (Diagnosis) 
+# e fatores como histórico familiar, sintomas específicos e problemas comportamentais. Adicionalmente, calcula estatísticas descritivas, 
+# gera boxplots e aplica testes t com cálculo do d de Cohen para comparar as médias das pontuações
+# contínuas dos testes MMSE e ADL entre os grupos com e sem Alzheimer.
+
+# Integrantes do Grupo:
+# Alice Fernanda Oliveira Mercado (RA: 11202022127)
+# Breno Dias Besenbruch Caruso (RA: 11202231651)
+# Giovanna de Oliveira Brogliato (RA: 11202230923)
+# Larissa Hikaru Watanabe (RA: 11202320482)
+# Tiffany Guimarães Müller de Souza Soderi (RA: 11202130384)
+
+# Data de Criação: 30 de março de 2025
+# '---------------------------------------------------------'
+# Instalação de pacotes:
+install.packages("summarytools")
+install.packages("sampling")
+install.packages("RVAideMemoire")
+install.packages("car")
+install.packages("dplyr")
+install.packages("effectsize")
+
+library(summarytools)
+library(sampling)
+library(RVAideMemoire)
+library(car)
+library(dplyr)
+library(effectsize)
+
+
 # abrindo o banco de dados
-dados <- read.csv('alzheimers_disease_data.csv')
+dados <- dados_alzheimer
 
 # verificando a frequência do histórico familiar de alzheimer
 ctable(x = dados$Diagnosis, y = dados$FamilyHistoryAlzheimers, prop = "r", headings = FALSE)
