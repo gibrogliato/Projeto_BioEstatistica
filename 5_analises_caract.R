@@ -12,9 +12,20 @@
 # Larissa Hikaru Watanabe (RA: 11202320482)
 # Tiffany Guimarães Müller de Souza Soderi (RA: 11202130384)
 
+
 # Data de Criação: 30 de março de 2025
+
+# Ordem de Execução:
+# Execute os scripts na seguinte ordem:
+
+# 1. '1_analise_descritiva.R'
+# 2. '2_plot_histogramas.R'
+# 3. '3_correlatos.R'
+# 4. '4_hipoteses'
+# 5. '5_analises_caract.R'
+
 # '---------------------------------------------------------'
-# Instalação de pacotes:
+# instalação de pacotes:
 install.packages("summarytools")
 install.packages("sampling")
 install.packages("RVAideMemoire")
@@ -22,6 +33,7 @@ install.packages("car")
 install.packages("dplyr")
 install.packages("effectsize")
 
+# carregando pacotes
 library(summarytools)
 library(sampling)
 library(RVAideMemoire)
